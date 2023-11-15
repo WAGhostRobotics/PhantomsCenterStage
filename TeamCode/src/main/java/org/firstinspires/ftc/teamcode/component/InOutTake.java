@@ -37,8 +37,12 @@ public class InOutTake {
 //        box2.setPosition(CLOSE);
 //    }
 
-    public void intake(){
+    public void startIntake(){
         intake.setPower(1);
+    }
+
+    public void stopIntake(){
+        intake.setPower(0);
     }
 
     public double getFlapPosition(){
