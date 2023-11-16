@@ -7,44 +7,50 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class InOutTake {
 
     private DcMotor intake;
-    private Servo box1;
-    private Servo box2;
+    private Servo flap;
+//    private Servo box2;
 
+    //set values
     private double doorPower;
     private double OPEN;
     private double CLOSE;
 
     public void init(HardwareMap hwMap){
+        //replace flap with box1 in competition
         intake = hwMap.get(DcMotor.class, "intake");
-        box1 = hwMap.get(Servo.class, "box1");
-        box2 = hwMap.get(Servo.class, "box2");
+        flap = hwMap.get(Servo.class, "flap");
+//        box2 = hwMap.get(Servo.class, "box2");
     }
 
-    public void open1(){
-        box1.setPosition(OPEN);
+    public void openFlap(){
+        flap.setPosition(OPEN);
     }
 
-    public void open2(){
-        box2.setPosition(OPEN);
+//    public void open2(){
+//        box2.setPosition(OPEN);
+//    }
+
+    public void closeFlap(){
+        flap.setPosition(CLOSE);
     }
 
-    public void close1(){
-        box1.setPosition(CLOSE);
-    }
+//    public void close2(){
+//        box2.setPosition(CLOSE);
+//    }
 
-    public void close2(){
-        box2.setPosition(CLOSE);
-    }
-
-    public void intake(){
+    public void startIntake(){
         intake.setPower(1);
     }
 
-    public double getBox1Position(){
-        return box1.getPosition();
+    public void stopIntake(){
+        intake.setPower(0);
     }
 
-    public double getBox2Position(){
-        return box2.getPosition();
+    public double getFlapPosition(){
+        return flap.getPosition();
     }
+
+//    public double getBox2Position(){
+//        return box2.getPosition();
+//    }
 }
