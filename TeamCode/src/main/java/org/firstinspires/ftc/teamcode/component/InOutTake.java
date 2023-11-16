@@ -10,6 +10,7 @@ public class InOutTake {
     private Servo flap;
 //    private Servo box2;
 
+    //set values
     private double doorPower;
     private double OPEN;
     private double CLOSE;

@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.component.InOutTake;
+import org.firstinspires.ftc.teamcode.component.LinearSlide;
 import org.firstinspires.ftc.teamcode.component.Pivot;
 import org.firstinspires.ftc.teamcode.component.PlaneLauncher;
 
@@ -13,7 +14,7 @@ public class PhantomTeleOp extends LinearOpMode {
     PlaneLauncher planeLauncher;
     InOutTake inOutTake;
     Pivot pivot;
-    //Create Slide
+    LinearSlide slides;
 
     @Override
     public void runOpMode() throws InterruptedException{
@@ -27,7 +28,8 @@ public class PhantomTeleOp extends LinearOpMode {
         pivot = new Pivot();
         pivot.init(hardwareMap);
 
-        //Create and init slide
+        slides = new LinearSlide();
+        slides.init(hardwareMap);
 
         GamepadEx driverOp = new GamepadEx(gamepad1);// driver
         GamepadEx driverOp2 = new GamepadEx(gamepad2);//other
@@ -39,7 +41,7 @@ public class PhantomTeleOp extends LinearOpMode {
         inOutTake.closeFlap();
         planeLauncher.close();
         inOutTake.stopIntake();
-        //Retract slide
+        slides.setTargetPosition(LinearSlide.Pos.COLLAPSED_POSITION.getPosition());
 
         while(!isStopRequested()){
             if(gamepad1.y){
@@ -68,7 +70,8 @@ public class PhantomTeleOp extends LinearOpMode {
                 //pivot.update();
             }
             if(gamepad2.left_trigger>0){
-                //Retract Slide
+                //Fix 3 state problem
+                //Retract Slides
             }
             if(gamepad2.right_trigger>0){
                 //Extend Slide

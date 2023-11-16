@@ -1,18 +1,18 @@
 package org.firstinspires.ftc.teamcode.component;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Pivot {
+public class LinearSlide {
 
-    private DcMotor pMotor;
+    private DcMotorEx slideMotor;
 
     public enum Pos{
         //Update Values
-        OUT(10),
-        COLLAPSED(20),
-        CLIMB(30),
-        PLACE(40);
+        COLLAPSED_POSITION(10),
+        MIDDLE_POSITION(20),
+        FORWARD_POSITION(30);
 
         int position;
 
@@ -28,8 +28,8 @@ public class Pivot {
     private int targetPos;
 
     public void init(HardwareMap hwMap){
-        pMotor = hwMap.get(DcMotor.class, "pMotor");
-        pMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slideMotor = hwMap.get(DcMotorEx.class, "slideMotor");
+        slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void setTargetPosition(int position){
@@ -41,6 +41,6 @@ public class Pivot {
     }
 
     public void update(){
-        pMotor.setTargetPosition(targetPos);
+        slideMotor.setTargetPosition(targetPos);
     }
 }

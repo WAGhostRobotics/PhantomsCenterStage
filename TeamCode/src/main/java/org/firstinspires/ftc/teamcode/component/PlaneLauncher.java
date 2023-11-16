@@ -7,6 +7,7 @@ public class PlaneLauncher {
 
     private Servo pLauncher;
 
+    //Set Values
     private double UP;
     private double DOWN;
 
