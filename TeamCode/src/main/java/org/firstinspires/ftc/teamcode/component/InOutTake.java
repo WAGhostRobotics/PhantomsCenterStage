@@ -16,8 +16,8 @@ public class InOutTake {
     private double CLOSE;
 
     public void init(HardwareMap hwMap){
-        OPEN=1;
-        CLOSE=1;//Fix this
+        OPEN=0.15;
+        CLOSE=-0.05;
         //replace flap with box1 in competition
         intake = hwMap.get(DcMotor.class, "intake");
         flap = hwMap.get(Servo.class, "flap");
