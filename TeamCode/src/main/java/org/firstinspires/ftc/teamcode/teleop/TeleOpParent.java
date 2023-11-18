@@ -12,15 +12,24 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.component.Pivot;
 import org.firstinspires.ftc.teamcode.core.Bot;
 import org.firstinspires.ftc.teamcode.library.DriveStyle;
+import org.firstinspires.ftc.teamcode.library.DriverOrientedControl;
 
 
 public class TeleOpParent extends LinearOpMode {
 
+    DriverOrientedControl drive;
+    public double power = 0.8;
+    public double turningMultiplier = 0.8;
+
+    DriveStyle.DriveType type = DriveStyle.DriveType.MECANUMARCADE;
+
     @Override
     public void runOpMode() throws InterruptedException {
         Bot.init(hardwareMap, true);
+        GamepadEx driverOp = new GamepadEx(gamepad1);
         waitForStart();
 
         MecanumDrive drive = new MecanumDrive(
@@ -31,7 +40,64 @@ public class TeleOpParent extends LinearOpMode {
         );
 
         while (opModeIsActive()) {
-            //code goes here oh yeah
+
+            //DRIVETRAIN STUFF
+            if (type == DriveStyle.DriveType.MECANUMARCADE) {
+                drive.driveRobotCentric(
+                        power * driverOp.getLeftX(),
+                        power * driverOp.getLeftY(),
+                        power * driverOp.getRightX(),
+                        false
+                );
+            } else if (type == DriveStyle.DriveType.DRIVERORIENTED) {
+                drive.driveFieldCentric(
+                        power * (Math.pow(driverOp.getLeftX(), 3)),
+                        power * (Math.pow(driverOp.getLeftY(), 3)),
+                        turningMultiplier * power * (Math.pow(driverOp.getRightX(), 3)),
+                        Bot.imu.getRotation2d().getDegrees(),   // gyro value passed in here must be in degrees
+                        false
+                );
+            }
+            if (gamepad1.y) {
+                Bot.pivot.setTargetPosition(Pivot.Pos.CLIMB.getPosition());
+                //pivot.update();
+            }
+            if (gamepad1.a) {
+                Bot.planeLauncher.close();
+            }
+            if (gamepad1.left_trigger > 0) {
+                Bot.inOutTake.stopIntake();
+            }
+            if (gamepad1.right_trigger > 0) {
+                Bot.inOutTake.startIntake();
+            }
+            if (gamepad2.x) {
+                Bot.pivot.setTargetPosition(Pivot.Pos.OUT.getPosition());
+                //pivot.update();
+            }
+            if (gamepad2.y) {
+                Bot.pivot.setTargetPosition(Pivot.Pos.PLACE.getPosition());
+                //pivot.update();
+            }
+            if (gamepad2.b) {
+                Bot.pivot.setTargetPosition(Pivot.Pos.COLLAPSED.getPosition());
+                //pivot.update();
+            }
+            if (gamepad2.left_trigger > 0) {
+                //Fix 3 state problem
+                //Retract Slides
+            }
+            if (gamepad2.right_trigger > 0) {
+                //Extend Slide
+            }
+            if (gamepad2.left_bumper) {
+                Bot.inOutTake.openFlap();
+            }
+            if (gamepad2.right_bumper) {
+                Bot.inOutTake.closeFlap();
+            }
+            //test
+            Bot.pivot.update();
         }
     }
 }

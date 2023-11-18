@@ -12,6 +12,8 @@ public class PlaneLauncher {
     private double DOWN;
 
     public void init(HardwareMap hwmap){
+        UP = 0.00;
+        DOWN = 0.08;
         pLauncher = hwmap.get(Servo.class, "launcher");
     }
 

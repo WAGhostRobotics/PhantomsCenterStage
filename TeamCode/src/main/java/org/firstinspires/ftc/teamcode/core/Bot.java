@@ -3,41 +3,61 @@ package org.firstinspires.ftc.teamcode.core;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.component.InOutTake;
 import org.firstinspires.ftc.teamcode.component.LinearSlide;
+import org.firstinspires.ftc.teamcode.component.Pivot;
+import org.firstinspires.ftc.teamcode.component.PlaneLauncher;
+import org.firstinspires.ftc.teamcode.component.imu;
+import com.arcrobotics.ftclib.hardware.RevIMU;
+
 
 
 public class Bot {
     public static HardwareMap hardwareMap;
+    public static RevIMU imu;
 
-    public static LinearSlide slide;
+    public static Motor frontLeft;
+    public static Motor frontRight;
+    public static Motor backLeft;
+    public static Motor backRight;
 
-//    public static Motor frontLeft;
-//    public static Motor frontRight;
-//    public static Motor backLeft;
-//    public static Motor backRight;
+    public static PlaneLauncher planeLauncher;
+    public static InOutTake inOutTake;
+    public static Pivot pivot;
+    public static LinearSlide slides;
+//    public static imu imu;
 
     public static void init(HardwareMap hwMap, boolean initTeleOp) {
         // Assign HardwareMap
         hardwareMap = hwMap;
 
-        slide = new LinearSlide();
-        slide.init(hwMap);
+        planeLauncher = new PlaneLauncher();
+        planeLauncher.init(hardwareMap);
 
-//        frontLeft = new Motor(hwMap, "lf");
-//        frontRight = new Motor(hwMap, "rf");
-//        backLeft = new Motor(hwMap, "lr");
-//        backRight = new Motor(hwMap, "rr");
+        inOutTake = new InOutTake();
+        inOutTake.init(hardwareMap);
 
-//            frontLeft.setInverted(true);
-//            frontRight.setInverted(true);
-//            backLeft.setInverted(true);
-//            backRight.setInverted(true);
+        pivot = new Pivot();
+        pivot.init(hardwareMap);
+
+        slides = new LinearSlide();
+        slides.init(hardwareMap);
+
+        frontLeft = new Motor(hwMap, "lf");
+        frontRight = new Motor(hwMap, "rf");
+        backLeft = new Motor(hwMap, "lr");
+        backRight = new Motor(hwMap, "rr");
+
+        frontLeft.setInverted(true);
+        frontRight.setInverted(true);
+        backLeft.setInverted(true);
+        backRight.setInverted(true);
 
 
-//        frontLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-//        frontRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-//        backLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-//        backRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        frontLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        frontRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
     }
 
 
