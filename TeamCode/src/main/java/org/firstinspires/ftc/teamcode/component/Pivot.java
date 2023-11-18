@@ -2,15 +2,17 @@ package org.firstinspires.ftc.teamcode.component;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class Pivot {
 
-    private DcMotor pMotor;
+    private Servo pivotServo1;
+    private Servo pivotServo2;
 
     public enum Pos{
         //Update Values
         OUT(10),
-        COLLAPSED(20),
+        COLLAPSED(0),
         CLIMB(30),
         PLACE(40);
 
@@ -28,8 +30,9 @@ public class Pivot {
     private int targetPos;
 
     public void init(HardwareMap hwMap){
-        pMotor = hwMap.get(DcMotor.class, "pMotor");
-        pMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        pivotServo1 = hwMap.get(Servo.class, "pServo1");
+        pivotServo2 = hwMap.get(Servo.class, "pServo2");
     }
 
     public void setTargetPosition(int position){
@@ -41,6 +44,7 @@ public class Pivot {
     }
 
     public void update(){
-        pMotor.setTargetPosition(targetPos);
+        pivotServo1.setPosition(targetPos);
+        pivotServo2.setPosition(targetPos);
     }
 }
