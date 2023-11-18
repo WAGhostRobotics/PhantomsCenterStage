@@ -29,7 +29,7 @@ public class ServoTest extends LinearOpMode {
         //position = servo.getPosition();
         //servo.setDirection(Servo.Direction.REVERSE);
 
-        servo.setPosition(servo.getPosition()+0.12);
+        servo.setPosition(servo.getPosition()+0.15);
         while (!isStopRequested()){
 //            position = 0.05;
 //
