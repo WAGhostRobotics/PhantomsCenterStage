@@ -14,20 +14,11 @@ public class PhantomTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException{
 
-        GamepadEx driverOp = new GamepadEx(gamepad1);// driver
-        GamepadEx driverOp2 = new GamepadEx(gamepad2);//other
 
-        bot = new Bot();
-        bot.init(hardwareMap, true);
 
         waitForStart();
 
-        Bot.pivot.setTargetPosition(Pivot.Pos.COLLAPSED.getPosition());
-        Bot.pivot.update();
-        Bot.inOutTake.closeFlap();
-        Bot.planeLauncher.close();
-        Bot.inOutTake.stopIntake();
-        Bot.slides.setTargetPosition(LinearSlide.Pos.COLLAPSED_POSITION.getPosition());
+
 
         while(!isStopRequested()){
 

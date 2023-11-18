@@ -11,13 +11,15 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.component.LinearSlide;
 import org.firstinspires.ftc.teamcode.component.Pivot;
 import org.firstinspires.ftc.teamcode.core.Bot;
 import org.firstinspires.ftc.teamcode.library.DriveStyle;
 import org.firstinspires.ftc.teamcode.library.DriverOrientedControl;
 
-
+@TeleOp(name = "DaddyTeleOp")
 public class TeleOpParent extends LinearOpMode {
 
     DriverOrientedControl drive;
@@ -29,7 +31,17 @@ public class TeleOpParent extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Bot.init(hardwareMap, true);
-        GamepadEx driverOp = new GamepadEx(gamepad1);
+
+        GamepadEx driverOp = new GamepadEx(gamepad1);// driver
+        GamepadEx driverOp2 = new GamepadEx(gamepad2);//other
+
+        Bot.pivot.setTargetPosition(Pivot.Pos.COLLAPSED.getPosition());
+        Bot.pivot.update();
+        Bot.inOutTake.closeFlap();
+        Bot.planeLauncher.close();
+        Bot.inOutTake.stopIntake();
+        Bot.slides.setTargetPosition(LinearSlide.Pos.COLLAPSED_POSITION.getPosition());
+
         waitForStart();
 
         MecanumDrive drive = new MecanumDrive(
@@ -63,14 +75,16 @@ public class TeleOpParent extends LinearOpMode {
                 //pivot.update();
             }
             if (gamepad1.a) {
-                Bot.planeLauncher.close();
+                Bot.planeLauncher.open();
             }
+            //Check Intake
             if (gamepad1.left_trigger > 0) {
                 Bot.inOutTake.stopIntake();
             }
             if (gamepad1.right_trigger > 0) {
                 Bot.inOutTake.startIntake();
             }
+            //Check Pivot
             if (gamepad2.x) {
                 Bot.pivot.setTargetPosition(Pivot.Pos.OUT.getPosition());
                 //pivot.update();
@@ -83,12 +97,15 @@ public class TeleOpParent extends LinearOpMode {
                 Bot.pivot.setTargetPosition(Pivot.Pos.COLLAPSED.getPosition());
                 //pivot.update();
             }
+            //Check Slides after motor added
             if (gamepad2.left_trigger > 0) {
-                //Fix 3 state problem
-                //Retract Slides
+                Bot.slides.setTargetPosition(LinearSlide.Pos.COLLAPSED_POSITION.getPosition());
             }
             if (gamepad2.right_trigger > 0) {
-                //Extend Slide
+                Bot.slides.setTargetPosition(LinearSlide.Pos.MIDDLE_POSITION.getPosition());
+            }
+            if (gamepad2.right_trigger > 0 && gamepad2.right_trigger>0) {
+                Bot.slides.setTargetPosition(LinearSlide.Pos.FORWARD_POSITION.getPosition());
             }
             if (gamepad2.left_bumper) {
                 Bot.inOutTake.openFlap();
