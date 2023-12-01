@@ -7,7 +7,6 @@ import org.firstinspires.ftc.teamcode.component.InOutTake;
 import org.firstinspires.ftc.teamcode.component.LinearSlide;
 import org.firstinspires.ftc.teamcode.component.Pivot;
 import org.firstinspires.ftc.teamcode.component.PlaneLauncher;
-import org.firstinspires.ftc.teamcode.component.imu;
 import com.arcrobotics.ftclib.hardware.RevIMU;
 
 
@@ -28,7 +27,7 @@ public class Bot {
 //    public static imu imu;
 
     public static void init(HardwareMap hwMap, boolean initTeleOp) {
-        // Assign HardwareMap
+
         hardwareMap = hwMap;
 
         planeLauncher = new PlaneLauncher();
@@ -43,16 +42,15 @@ public class Bot {
         slides = new LinearSlide();
         slides.init(hardwareMap);
 
-        frontLeft = new Motor(hwMap, "lf");
-        frontRight = new Motor(hwMap, "rf");
-        backLeft = new Motor(hwMap, "lr");
-        backRight = new Motor(hwMap, "rr");
+        frontLeft = new Motor(hwMap, "leftFront");
+        frontRight = new Motor(hwMap, "rightFront");
+        backLeft = new Motor(hwMap, "leftBack");
+        backRight = new Motor(hwMap, "rightBack");
 
         frontLeft.setInverted(true);
         frontRight.setInverted(true);
         backLeft.setInverted(true);
-        backRight.setInverted(true);
-
+        backRight.setInverted(false);
 
         frontLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
