@@ -1,14 +1,14 @@
 package org.firstinspires.ftc.teamcode.core;
 
+import com.arcrobotics.ftclib.hardware.RevIMU;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.component.InOutTake;
 import org.firstinspires.ftc.teamcode.component.LinearSlide;
 import org.firstinspires.ftc.teamcode.component.Pivot;
+import org.firstinspires.ftc.teamcode.component.Imu;
 import org.firstinspires.ftc.teamcode.component.PlaneLauncher;
-import com.arcrobotics.ftclib.hardware.RevIMU;
-
 
 
 public class Bot {
@@ -29,18 +29,20 @@ public class Bot {
     public static void init(HardwareMap hwMap, boolean initTeleOp) {
 
         hardwareMap = hwMap;
+        imu = new RevIMU(hwMap);
+        imu.init();
 
-        planeLauncher = new PlaneLauncher();
-        planeLauncher.init(hardwareMap);
-
-        inOutTake = new InOutTake();
-        inOutTake.init(hardwareMap);
-
-        pivot = new Pivot();
-        pivot.init(hardwareMap);
-
-        slides = new LinearSlide();
-        slides.init(hardwareMap);
+//        planeLauncher = new PlaneLauncher();
+//        planeLauncher.init(hardwareMap);
+//
+//        inOutTake = new InOutTake();
+//        inOutTake.init(hardwareMap);
+//
+//        pivot = new Pivot();
+//        pivot.init(hardwareMap);
+//
+//        slides = new LinearSlide();
+//        slides.init(hardwareMap);
 
         frontLeft = new Motor(hwMap, "leftFront");
         frontRight = new Motor(hwMap, "rightFront");

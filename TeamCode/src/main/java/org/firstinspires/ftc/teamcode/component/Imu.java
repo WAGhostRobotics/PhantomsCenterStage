@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.component;
 
+import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,7 +14,7 @@ import java.util.function.DoubleSupplier;
 
 import javax.annotation.concurrent.GuardedBy;
 
-public class imu {
+public class Imu {
 
     Thread imuThread;
     private final Object imuSync = new Object();
@@ -24,7 +25,7 @@ public class imu {
     private double angularVelocity = 0;
     HardwareMap hwMap;
 
-    public imu(HardwareMap hwMap){
+    public Imu(HardwareMap hwMap){
         this.hwMap = hwMap;
         initIMU();
     }

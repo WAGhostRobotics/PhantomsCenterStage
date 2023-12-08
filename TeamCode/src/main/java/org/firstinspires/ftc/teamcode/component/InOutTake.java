@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class InOutTake {
 
     private DcMotor intake;
-    private Servo flap;
+    public Servo flap;
 //    private Servo box2;
 
     //set values
@@ -16,8 +16,8 @@ public class InOutTake {
     private double CLOSE;
 
     public void init(HardwareMap hwMap){
-        OPEN=0.15;
-        CLOSE=-0.05;
+        OPEN=0.125;
+        CLOSE=0;
         //replace flap with box1 in competition
         intake = hwMap.get(DcMotor.class, "intake");
         flap = hwMap.get(Servo.class, "flap");
@@ -25,7 +25,7 @@ public class InOutTake {
     }
 
     public void openFlap(){
-        flap.setPosition(OPEN);
+        flap.setPosition(10);
     }
 
 //    public void open2(){
@@ -41,7 +41,11 @@ public class InOutTake {
 //    }
 
     public void startIntake(){
-        intake.setPower(1);
+        intake.setPower(0.5);
+    }
+
+    public void reverseIntake(){
+        intake.setPower(-0.5);
     }
 
     public void stopIntake(){
