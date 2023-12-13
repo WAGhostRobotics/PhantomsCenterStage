@@ -24,7 +24,7 @@ public class Wow extends LinearOpMode {
     static final int STREAM_HEIGHT = 720; // modify for your camera
     OpenCvWebcam webcam;
     // OpenCvPipeline pipe;
-    AprilTagDetect pipe;
+    SpikeDetect pipe;
 
     public void display() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -32,9 +32,9 @@ public class Wow extends LinearOpMode {
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1"); // put your camera's name here
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
 
-        // pipe = new SpikeDetect(true);
+         pipe = new SpikeDetect(false);
         // pipe = new PixelDetect();
-        pipe = new AprilTagDetect(0.1016, 822.317, 822.317f, 319.495, 242.502);
+//        pipe = new AprilTagDetect(0.1016, 822.317, 822.317f, 319.495, 242.502);
 
         webcam.setPipeline(pipe);
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -59,10 +59,10 @@ public class Wow extends LinearOpMode {
 
         while(opModeIsActive()) {
 //            // Test SpikeDetect pipeline
-//            telemetry.addData("Location", pipe.getLocation());
-//            telemetry.addData("Left Region", pipe.getLeft());
-//            telemetry.addData("Mid Region", pipe.getMid());
-//            telemetry.addData("Right Region", pipe.getRight());
+            telemetry.addData("Location", pipe.getLocation());
+            telemetry.addData("Left Region", pipe.getLeft());
+            telemetry.addData("Mid Region", pipe.getMid());
+            telemetry.addData("Right Region", pipe.getRight());
 //
 //            // Test PixelDetect pipeline
 //            telemetry.addData("Contour Area", pipe.getContourArea());
@@ -70,9 +70,9 @@ public class Wow extends LinearOpMode {
 //            telemetry.addData("Y Center", pipe.getCenter().y);
 
             // Test AprilTagDetect pipeline
-            for (AprilTagDetection detection: pipe.getLatestDetections()) {
-                telemetry.addData("ID " + detection.id, detection.center.x);
-            }
+//            for (AprilTagDetection detection: pipe.getLatestDetections()) {
+//                telemetry.addData("ID " + detection.id, detection.center.x);
+//            }
 
             telemetry.update();
         }
