@@ -1,48 +1,78 @@
+/** This is the code used for the field-centric driving tutorial
+ This is by no means a perfect code
+ There are a number of improvements that can be made
+ So, feel free to add onto this and make it better
+ */
+
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.hardware.RevIMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.core.Bot;
+import org.firstinspires.ftc.teamcode.library.DriveStyle;
+import org.firstinspires.ftc.teamcode.library.DriverOrientedControl;
 
-@TeleOp(name="servoTestNonZero")
+@TeleOp(name = "ServoTest")
 public class ServoTest extends LinearOpMode {
 
-    double position;
-    Servo servo;
-//    Servo servo2;
+//    DriverOrientedControl drive;
+//    public double power = 0.8;
+//    public double turningMultiplier = 0.8;
+    //This bad boy
+//    DriveStyle.DriveType type = DriveStyle.DriveType.DRIVERORIENTED;
+
+    Servo claw;
 
     @Override
-    public void runOpMode() throws InterruptedException{
-        //Bot.init(hardwareMap, true);
-        servo = hardwareMap.get(Servo.class, "servy");
-//        servo2 = hardwareMap.get(Servo.class, "servy2");
-        GamepadEx driverOp = new GamepadEx(gamepad1);// driver
-//        servo.setDirection(Servo.Direction.REVERSE);
-        servo.setPosition(-0.05);
-//        servo2.setPosition(0);
-        position = 0;
-        waitForStart();
-        //position = servo.getPosition();
-        //servo.setDirection(Servo.Direction.REVERSE);
+    public void runOpMode() throws InterruptedException {
+//        Bot.init(hardwareMap, true);
 
-        servo.setPosition(servo.getPosition()+0.15);
-        while (!isStopRequested()){
-//            position = 0.05;
-//
-//
-            //servo2.setPosition(position);
-//            if (gamepad1.a){
-//                position-=0.01;
-//
+//        GamepadEx driverOp = new GamepadEx(gamepad1);// driver
+
+        claw=hardwareMap.get(Servo.class, "claw");
+        GamepadEx driverOp = new GamepadEx(gamepad1);// driver
+        waitForStart();
+
+//        MecanumDrive drive = new MecanumDrive(
+//                Bot.frontLeft,
+//                Bot.frontRight,
+//                Bot.backLeft,
+//                Bot.backRight
+//        );
+
+        while (opModeIsActive()) {
+
+            if (gamepad1.a){
+                claw.setPosition(1);
+            }
+            if (gamepad1.b){
+                claw.setPosition(0);
+            }
+//            telemetry.addData("LS X", gamepad1.left_stick_x);
+            telemetry.addData("Claw", claw.getPosition());
+
+            //DRIVETRAIN STUFF
+//            if (type == DriveStyle.DriveType.MECANUMARCADE) {
+//                drive.driveRobotCentric(
+//                        power * driverOp.getLeftX(),
+//                        power * driverOp.getLeftY(),
+//                        power * driverOp.getRightX(),
+//                        false
+//                );
+//            } else if (type == DriveStyle.DriveType.DRIVERORIENTED) {
+//                drive.driveFieldCentric(
+//                        power * (Math.pow(driverOp.getLeftX(), 3)),
+//                        power * (Math.pow(driverOp.getLeftY(), 3)),
+//                        turningMultiplier * power * (Math.pow(driverOp.getRightX(), 3)),
+//                        Bot.imu.getRotation2d().getDegrees(),   // gyro value passed in here must be in degrees
+//                        false
+//                );
 //            }
-//            servo2.setPosition(position);
-            telemetry.addData("Current Position", servo.getPosition());
-//            telemetry.addData("Current Position 2", servo2.getPosition());
-            telemetry.addData("Target", position);
             telemetry.update();
         }
     }
