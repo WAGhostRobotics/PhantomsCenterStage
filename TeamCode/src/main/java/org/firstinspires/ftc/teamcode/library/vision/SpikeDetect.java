@@ -35,6 +35,7 @@ public class SpikeDetect extends OpenCvPipeline {
         }
     }
 
+
     //locations
     public enum Location {
         LEFT,
