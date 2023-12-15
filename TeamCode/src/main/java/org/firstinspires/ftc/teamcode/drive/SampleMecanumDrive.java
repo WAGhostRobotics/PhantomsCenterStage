@@ -21,7 +21,6 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
@@ -53,18 +52,16 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(8, 0, 0.000000000001);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(12, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
 
-    public static double LATERAL_MULTIPLIER = 60.0/40.1;
+    public static double LATERAL_MULTIPLIER = 1;
 
-    public static Pose2d permissibleError = new Pose2d(1.4, 1, Math.toRadians(8));
+//    public static Pose2d permissibleError = new Pose2d(1.4, 1, Math.toRadians(8));
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
     public static double OMEGA_WEIGHT = 1;
-
-
 
     private TrajectorySequenceRunner trajectorySequenceRunner;
 
@@ -83,9 +80,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-                new Pose2d(0.25, 0.25, Math.toRadians(2)), 1.0);
-
-
+                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
 
@@ -96,16 +91,15 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: adjust the names of the following hardware devices to match your configuration
-//        imu = hardwareMap.get(BNO055IMU.class, "imu");
-//        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-//        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
-//        imu.initialize(parameters);
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+        imu.initialize(parameters);
 
         // TODO: If the hub containing the IMU you are using is mounted so that the "REV" logo does
         // not face up, remap the IMU axes so that the z-axis points upward (normal to the floor.)
         //
         //             | +Z axis
-        //             |
         //             |
         //             |
         //      _______|_____________     +Y axis
@@ -119,7 +113,6 @@ public class SampleMecanumDrive extends MecanumDrive {
         //
         // This diagram is derived from the axes in section 3.4 https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf
         // and the placement of the dot/orientation from https://docs.revrobotics.com/rev-control-system/control-system-overview/dimensions#imu-location
-        //
         // For example, if +Y in this diagram faces downwards, you would use AxisDirection.NEG_Y.
         // BNO055IMUUtil.remapZAxis(imu, AxisDirection.NEG_Y);
 
@@ -148,12 +141,12 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         // TODO: reverse any motors using DcMotor.setDirection()
 
-        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+//        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+//        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
 //        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // TODO: if desired, use setLocalizer() to change the localization method
-        setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
+//        setLocalizer(new TwoWheelTrackingLocalizer(hardwareMap, this));
 
         trajectorySequenceRunner = new TrajectorySequenceRunner(follower, HEADING_PID);
     }
@@ -217,13 +210,13 @@ public class SampleMecanumDrive extends MecanumDrive {
         return trajectorySequenceRunner.getLastPoseError();
     }
 
-    public boolean inError(Pose2d targetPos){
-        Pose2d error = getPoseEstimate().minus(targetPos);
-
-        return Math.abs(error.getX())> permissibleError.getX()||
-                Math.abs(error.getY())> permissibleError.getY()||
-                Math.abs(error.getHeading())> permissibleError.getHeading();
-    }
+//    public boolean inError(Pose2d targetPos){
+//        Pose2d error = getPoseEstimate().minus(targetPos);
+//
+//        return Math.abs(error.getX())> permissibleError.getX()||
+//                Math.abs(error.getY())> permissibleError.getY()||
+//                Math.abs(error.getHeading())> permissibleError.getHeading();
+//    }
 
     public void update() {
         updatePoseEstimate();
@@ -313,14 +306,14 @@ public class SampleMecanumDrive extends MecanumDrive {
     @Override
     public double getRawExternalHeading() {
 
-//        return imu.getAngularOrientation().firstAngle;
-        return 0;
+        return imu.getAngularOrientation().firstAngle;
+//        return 0;
     }
 
     @Override
     public Double getExternalHeadingVelocity() {
-//        return (double) imu.getAngularVelocity().zRotationRate;
-        return 0.0;
+        return (double) imu.getAngularVelocity().zRotationRate;
+//        return 0.0;
     }
 
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {
