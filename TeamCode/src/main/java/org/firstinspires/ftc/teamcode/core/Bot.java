@@ -50,9 +50,9 @@ public class Bot {
         backRight = new Motor(hwMap, "rightBack");
 
         frontLeft.setInverted(true);
-        frontRight.setInverted(true);
+        frontRight.setInverted(false);
         backLeft.setInverted(true);
-        backRight.setInverted(false);
+        backRight.setInverted(true);
 
         frontLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
