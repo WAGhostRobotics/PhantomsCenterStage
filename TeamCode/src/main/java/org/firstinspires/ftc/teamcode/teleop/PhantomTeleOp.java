@@ -1,89 +1,114 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.hardware.RevIMU;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import org.firstinspires.ftc.teamcode.component.InOutTake;
-import org.firstinspires.ftc.teamcode.component.LinearSlide;
-import org.firstinspires.ftc.teamcode.component.Pivot;
-import org.firstinspires.ftc.teamcode.component.PlaneLauncher;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name="servotest")
+import org.firstinspires.ftc.teamcode.core.Bot;
+import org.firstinspires.ftc.teamcode.library.DriveStyle;
+import org.firstinspires.ftc.teamcode.library.DriverOrientedControl;
+
+@TeleOp(name = "PhantomTeleOp")
 public class PhantomTeleOp extends LinearOpMode {
 
-    PlaneLauncher planeLauncher;
-    InOutTake inOutTake;
-    Pivot pivot;
-    LinearSlide slides;
+    DriverOrientedControl drive;
+    public double power = 0.8;
+    public double turningMultiplier = 0.8;
+
+    private boolean lastA = false;
+    private boolean claw = false;
+    private boolean lastB = false;
+    private boolean launched = false;
+    //This bad boy
+    DriveStyle.DriveType type = DriveStyle.DriveType.MECANUMARCADE;
+
+    CRServo launcher;
+    Servo intake;
 
     @Override
-    public void runOpMode() throws InterruptedException{
-
-        planeLauncher = new PlaneLauncher();
-        planeLauncher.init(hardwareMap);
-
-        inOutTake = new InOutTake();
-        inOutTake.init(hardwareMap);
-
-        pivot = new Pivot();
-        pivot.init(hardwareMap);
-
-        slides = new LinearSlide();
-        slides.init(hardwareMap);
-
+    public void runOpMode() throws InterruptedException {
+        Bot.init(hardwareMap, true);
+        launcher = hardwareMap.get(CRServo.class, "launcher");
+        intake = hardwareMap.get(Servo.class, "intake");
         GamepadEx driverOp = new GamepadEx(gamepad1);// driver
-        GamepadEx driverOp2 = new GamepadEx(gamepad2);//other
-
         waitForStart();
+        MecanumDrive drive = new MecanumDrive(
+                Bot.frontLeft,
+                Bot.frontRight,
+                Bot.backLeft,
+                Bot.backRight
+        );
+        while (opModeIsActive()) {
+//            if (gamepad1.b){
+//                claw.setPosition(0);
+//            }
+            if(gamepad1.b && !lastB && launched){
+                launcher.setPower(0);
+                lastB = true;
+                launched = false;
+            }
+            else if(gamepad1.b && !lastB){
+                launcher.setPower(1);
+                lastB = true;
+                launched = true;
+            }
+            else if(gamepad1.b){
+                lastB = true;
+            }
+            else{
+                lastB = false;
+            }
 
-        pivot.setTargetPosition(Pivot.Pos.COLLAPSED.getPosition());
-        pivot.update();
-        inOutTake.closeFlap();
-        planeLauncher.close();
-        inOutTake.stopIntake();
-        slides.setTargetPosition(LinearSlide.Pos.COLLAPSED_POSITION.getPosition());
+            if(gamepad1.a && !lastA && !claw){
+                intake.setPosition(0);
+                lastA = true;
+                claw = true;
+            }
+            else if(gamepad1.a && !lastA){
+                intake.setPosition(1);
+                lastA = true;
+                claw = false;
+            }
+            else if(gamepad1.a){
+                lastA = true;
+            }
+            else{
+                lastA = false;
+            }
+//            if(gamepad1.a){
+//                claw.setPosition(0);
+//            }
+//            if(gamepad1.b){
+//                claw.setPosition(1);
+//            }
+            telemetry.addData("Last A?", lastA);
+            telemetry.addData("Claw?", claw);
+            telemetry.addData("Last B?", lastB);
+            telemetry.addData("Launched?", launched);
 
-        while(!isStopRequested()){
-            if(gamepad1.y){
-                pivot.setTargetPosition(Pivot.Pos.CLIMB.getPosition());
-                //pivot.update();
+            //DRIVETRAIN STUFF
+            if (type == DriveStyle.DriveType.MECANUMARCADE) {
+                drive.driveRobotCentric(
+                        power * driverOp.getLeftX(),
+                        power * driverOp.getLeftY(),
+                        power * driverOp.getRightX(),
+                        false
+                );
+            } else if (type == DriveStyle.DriveType.DRIVERORIENTED) {
+                drive.driveFieldCentric(
+                        power * (Math.pow(driverOp.getLeftX(), 3)),
+                        power * (Math.pow(driverOp.getLeftY(), 3)),
+                        turningMultiplier * power * (Math.pow(driverOp.getRightX(), 3)),
+                        Bot.imu.getRotation2d().getDegrees(),   // gyro value passed in here must be in degrees
+                        false
+                );
             }
-            if(gamepad1.a){
-                planeLauncher.close();
-            }
-            if(gamepad1.left_trigger>0){
-                inOutTake.stopIntake();
-            }
-            if(gamepad1.right_trigger>0){
-                inOutTake.startIntake();
-            }
-            if(gamepad2.x){
-                pivot.setTargetPosition(Pivot.Pos.OUT.getPosition());
-                //pivot.update();
-            }
-            if(gamepad2.y){
-                pivot.setTargetPosition(Pivot.Pos.PLACE.getPosition());
-                //pivot.update();
-            }
-            if(gamepad2.b){
-                pivot.setTargetPosition(Pivot.Pos.COLLAPSED.getPosition());
-                //pivot.update();
-            }
-            if(gamepad2.left_trigger>0){
-                //Fix 3 state problem
-                //Retract Slides
-            }
-            if(gamepad2.right_trigger>0){
-                //Extend Slide
-            }
-            if(gamepad2.left_bumper){
-                inOutTake.openFlap();
-            }
-            if(gamepad2.right_bumper) {
-                inOutTake.closeFlap();
-            }
-            //test
-            pivot.update();
+            telemetry.update();
         }
     }
 }

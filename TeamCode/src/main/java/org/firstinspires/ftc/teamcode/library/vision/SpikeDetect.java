@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.library.vision;
 
-//import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.config.Config;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -10,7 +10,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-//@Config
+@Config
 public class SpikeDetect extends OpenCvPipeline {
     Mat mat = new Mat();
 
@@ -24,14 +24,17 @@ public class SpikeDetect extends OpenCvPipeline {
 //        lowHSV = new Scalar(110, 200, 50);
 //        highHSV = new Scalar(130, 255, 255);
         //Red
-//        lowHSV = new Scalar(0, 128, 100);
-//        highHSV = new Scalar(20, 255, 255);
+//        lowHSV = new Scalar(-15, 73, 153);
+//        highHSV = new Scalar(15, 200, 255);
+        //Scuffed White
+//        lowHSV = new Scalar(0, 0, 240);
+//        highHSV = new Scalar(180, 25, 255);
         if (redAlliance) {
-            lowHSV = new Scalar(0, 128, 100);
-            highHSV = new Scalar(20, 255, 255);
+            lowHSV = new Scalar(-15, 73, 153);
+            highHSV = new Scalar(15, 200, 255);
         } else {
-            lowHSV = new Scalar(0, 0, 240);
-            highHSV = new Scalar(180, 25, 255);
+            lowHSV = new Scalar(80, 50, 50);
+            highHSV = new Scalar(110, 200, 255);
         }
     }
 
@@ -86,6 +89,7 @@ public class SpikeDetect extends OpenCvPipeline {
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB);
 
         //select location region and draw rectangle on it
+        //replace following mats with input for unchanged image
         if (leftValue > midValue && leftValue > rightValue) {
             location = Location.LEFT;
             Imgproc.rectangle(mat, LEFT_ROI, new Scalar(255, 0, 0), 5);

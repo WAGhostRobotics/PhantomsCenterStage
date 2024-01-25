@@ -1,7 +1,9 @@
-package org.firstinspires.ftc.teamcode.auto;
+package org.firstinspires.ftc.teamcode.teleop;
 
 import androidx.core.app.NotificationCompat;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -18,7 +20,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @TeleOp(name = "CV Test")
-public class Wow extends LinearOpMode {
+public class CVTest extends LinearOpMode {
 
     static final int STREAM_WIDTH = 1280; // modify for your camera
     static final int STREAM_HEIGHT = 720; // modify for your camera
@@ -31,7 +33,8 @@ public class Wow extends LinearOpMode {
         WebcamName webcamName = null;
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1"); // put your camera's name here
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
-
+        FtcDashboard.getInstance().startCameraStream(webcam, 0);
+        GamepadEx driverOp = new GamepadEx(gamepad1);// driver
          pipe = new SpikeDetect(false);
         // pipe = new PixelDetect();
 //        pipe = new AprilTagDetect(0.1016, 822.317, 822.317f, 319.495, 242.502);

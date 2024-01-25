@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.component;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
+@Config
 public class Webcam {
     static final int STREAM_WIDTH = 1280; // modify for your camera
     static final int STREAM_HEIGHT = 720; // modify for your camera
@@ -51,8 +54,9 @@ public class Webcam {
         WebcamName webcamName = null;
         webcamName = hardwareMap.get(WebcamName.class, "Webcam"); // put your camera's name here
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
+
 //        aprilTagDetect = new AprilTagDetect(tagsize, fx, fy, cx, cy);
-        SpikeDetect pipe = new SpikeDetect(redAlliance);
+        spikePipe = new SpikeDetect(redAlliance);
 
         webcam.setPipeline(spikePipe);
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
