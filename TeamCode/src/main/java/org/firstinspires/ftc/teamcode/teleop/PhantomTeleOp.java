@@ -80,12 +80,6 @@ public class PhantomTeleOp extends LinearOpMode {
             else{
                 lastA = false;
             }
-//            if(gamepad1.a){
-//                claw.setPosition(0);
-//            }
-//            if(gamepad1.b){
-//                claw.setPosition(1);
-//            }
             telemetry.addData("Last A?", lastA);
             telemetry.addData("Claw?", claw);
             telemetry.addData("Last B?", lastB);
