@@ -12,7 +12,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.component.LinearSlide;
-import org.firstinspires.ftc.teamcode.component.Pivot;
 import org.firstinspires.ftc.teamcode.core.Bot;
 import org.firstinspires.ftc.teamcode.library.DriveStyle;
 import org.firstinspires.ftc.teamcode.library.DriverOrientedControl;
@@ -34,11 +33,7 @@ public class TeleOpParent extends LinearOpMode {
         GamepadEx driverOp = new GamepadEx(gamepad1);// driver
         GamepadEx driverOp2 = new GamepadEx(gamepad2);//other
 
-        Bot.pivot.setTargetPosition(Pivot.Pos.COLLAPSED.getPosition());
-        Bot.pivot.update();
-        Bot.inOutTake.closeFlap();
         Bot.planeLauncher.close();
-        Bot.inOutTake.stopIntake();
         Bot.slides.setTargetPosition(LinearSlide.Pos.COLLAPSED_POSITION.getPosition());
 
         waitForStart();
@@ -69,35 +64,8 @@ public class TeleOpParent extends LinearOpMode {
                         false
                 );
             }
-            if (gamepad1.y) {
-                Bot.pivot.setTargetPosition(Pivot.Pos.CLIMB.getPosition());
-                //pivot.update();
-            }
             if (gamepad1.a) {
                 Bot.planeLauncher.open();
-            }
-            //Check Intake
-            if (gamepad1.left_bumper && !gamepad1.right_bumper) {
-                Bot.inOutTake.reverseIntake();
-            }
-            if (gamepad1.right_bumper && !gamepad1.left_bumper) {
-                Bot.inOutTake.startIntake();
-            }
-            if (gamepad1.right_bumper && gamepad1.left_bumper) {
-                Bot.inOutTake.stopIntake();
-            }
-            //Check Pivot
-            if (gamepad2.y) {
-                Bot.pivot.setTargetPosition(Pivot.Pos.OUT.getPosition());
-                //pivot.update();
-            }
-            if (gamepad2.x) {
-                Bot.pivot.setTargetPosition(Pivot.Pos.PLACE.getPosition());
-                //pivot.update();
-            }
-            if (gamepad2.b) {
-                Bot.pivot.setTargetPosition(Pivot.Pos.COLLAPSED.getPosition());
-                //pivot.update();
             }
             //Check Slides after motor added
             if (gamepad2.left_trigger > 0) {
@@ -109,18 +77,6 @@ public class TeleOpParent extends LinearOpMode {
             if (gamepad2.right_trigger > 0 && gamepad2.right_trigger>0) {
                 Bot.slides.setTargetPosition(LinearSlide.Pos.FORWARD_POSITION.getPosition());
             }
-            if (gamepad2.left_bumper) {
-                //Bot.inOutTake.openFlap();
-                Bot.inOutTake.flap.setPosition(0.25);
-                telemetry.addData("Bumper", gamepad2.left_bumper);
-            }
-            if (gamepad2.right_bumper) {
-                Bot.inOutTake.closeFlap();
-            }
-            //test
-            Bot.pivot.update();
-            telemetry.addData("Flap Pos", Bot.inOutTake.getFlapPosition());
-            telemetry.addData("Flap Pos", Bot.inOutTake.flap.getPosition());
             telemetry.update();
         }
     }

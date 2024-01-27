@@ -2,11 +2,9 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.hardware.RevIMU;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.core.Bot;
@@ -27,14 +25,9 @@ public class PhantomTeleOp extends LinearOpMode {
     //This bad boy
     DriveStyle.DriveType type = DriveStyle.DriveType.MECANUMARCADE;
 
-    CRServo launcher;
-    Servo intake;
-
     @Override
     public void runOpMode() throws InterruptedException {
         Bot.init(hardwareMap, true);
-        launcher = hardwareMap.get(CRServo.class, "launcher");
-        intake = hardwareMap.get(Servo.class, "intake");
         GamepadEx driverOp = new GamepadEx(gamepad1);// driver
         waitForStart();
         MecanumDrive drive = new MecanumDrive(
@@ -44,16 +37,13 @@ public class PhantomTeleOp extends LinearOpMode {
                 Bot.backRight
         );
         while (opModeIsActive()) {
-//            if (gamepad1.b){
-//                claw.setPosition(0);
-//            }
             if(gamepad1.b && !lastB && launched){
-                launcher.setPower(0);
+                Bot.planeLauncher.close();
                 lastB = true;
                 launched = false;
             }
             else if(gamepad1.b && !lastB){
-                launcher.setPower(1);
+                Bot.planeLauncher.open();
                 lastB = true;
                 launched = true;
             }
@@ -65,12 +55,12 @@ public class PhantomTeleOp extends LinearOpMode {
             }
 
             if(gamepad1.a && !lastA && !claw){
-                intake.setPosition(0);
+                Bot.intake.open();
                 lastA = true;
                 claw = true;
             }
             else if(gamepad1.a && !lastA){
-                intake.setPosition(1);
+                Bot.intake.close();
                 lastA = true;
                 claw = false;
             }
