@@ -12,7 +12,7 @@ public class Intake {
     private double CLOSED;
 
     public void init(HardwareMap hwmap){
-        OPEN = 0;
+        OPEN = 0.2;
         CLOSED = 1;
         intake = hwmap.get(Servo.class, "intake");
     }

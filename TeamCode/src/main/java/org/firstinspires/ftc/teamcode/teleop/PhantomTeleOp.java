@@ -35,22 +35,22 @@ public class PhantomTeleOp extends LinearOpMode {
                 Felicia.backRight
         );
         while (opModeIsActive()) {
-            if(gamepad1.b && !lastB && launched){
-                Felicia.planeLauncher.close();
-                lastB = true;
-                launched = false;
-            }
-            else if(gamepad1.b && !lastB){
-                Felicia.planeLauncher.open();
-                lastB = true;
-                launched = true;
-            }
-            else if(gamepad1.b){
-                lastB = true;
-            }
-            else{
-                lastB = false;
-            }
+//            if(gamepad1.b && !lastB && launched){
+//                Felicia.planeLauncher.close();
+//                lastB = true;
+//                launched = false;
+//            }
+//            else if(gamepad1.b && !lastB){
+//                Felicia.planeLauncher.open();
+//                lastB = true;
+//                launched = true;
+//            }
+//            else if(gamepad1.b){
+//                lastB = true;
+//            }
+//            else{
+//                lastB = false;
+//            }
 
             if(gamepad1.a && !lastA && !claw){
                 Felicia.intake.open();
@@ -62,12 +62,15 @@ public class PhantomTeleOp extends LinearOpMode {
                 lastA = true;
                 claw = false;
             }
-            else if(gamepad1.a){
-                lastA = true;
-            }
             else{
-                lastA = false;
+                lastA = gamepad1.a;
             }
+//            if(gamepad1.dpad_down){
+//                Felicia.slides.retract();
+//            }
+//            if(gamepad1.dpad_up){
+//                Felicia.slides.extend();
+//            }
             telemetry.addData("Last A?", lastA);
             telemetry.addData("Claw?", claw);
             telemetry.addData("Last B?", lastB);

@@ -1,9 +1,4 @@
-/** This is the code used for the field-centric driving tutorial
- This is by no means a perfect code
- There are a number of improvements that can be made
- So, feel free to add onto this and make it better
- */
-
+//OUTDATED
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
@@ -28,13 +23,10 @@ public class TeleOpParent extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Felicia.init(hardwareMap, true);
+        Felicia.init(hardwareMap, true, false);
 
         GamepadEx driverOp = new GamepadEx(gamepad1);// driver
         GamepadEx driverOp2 = new GamepadEx(gamepad2);//other
-
-        Felicia.planeLauncher.close();
-        Felicia.slides.setTargetPosition(LinearSlide.Pos.COLLAPSED_POSITION.getPosition());
 
         waitForStart();
 
@@ -66,16 +58,6 @@ public class TeleOpParent extends LinearOpMode {
             }
             if (gamepad1.a) {
                 Felicia.planeLauncher.open();
-            }
-            //Check Slides after motor added
-            if (gamepad2.left_trigger > 0) {
-                Felicia.slides.setTargetPosition(LinearSlide.Pos.COLLAPSED_POSITION.getPosition());
-            }
-            if (gamepad2.right_trigger > 0) {
-                Felicia.slides.setTargetPosition(LinearSlide.Pos.MIDDLE_POSITION.getPosition());
-            }
-            if (gamepad2.right_trigger > 0 && gamepad2.right_trigger>0) {
-                Felicia.slides.setTargetPosition(LinearSlide.Pos.FORWARD_POSITION.getPosition());
             }
             telemetry.update();
         }

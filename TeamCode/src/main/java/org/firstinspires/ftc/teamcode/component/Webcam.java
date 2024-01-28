@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.component;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.matrices.MatrixF;
 import org.firstinspires.ftc.teamcode.library.vision.AprilTagDetect;
 import org.firstinspires.ftc.teamcode.library.vision.PixelDetect;
 import org.firstinspires.ftc.teamcode.library.vision.SpikeDetect;
@@ -18,14 +18,14 @@ import java.util.ArrayList;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
-@Config
 public class Webcam {
     static final int STREAM_WIDTH = 1280; // modify for your camera
     static final int STREAM_HEIGHT = 720; // modify for your camera
     OpenCvWebcam webcam;
 
-    AprilTagDetect aprilTagDetect;
     SpikeDetect spikePipe;
+    // AprilTagDetect aprilTagPipe;
+    PixelDetect pixelPipe;
 
     // Lens intrinsics
     // UNITS ARE PIXELS
@@ -39,9 +39,11 @@ public class Webcam {
     // UNITS ARE METERS
     double tagsize = 0.166;
 
-    AprilTagDetection tagOfInterest = null;
+    AprilTagDetection tagOfInterest = null; // tag you want
 
-    Location location = null;
+    AprilTagLocation aprilTagLocation = null; // tag in general
+
+    SpikeDetect.Location location = null;
 
     private boolean redAlliance;
 
@@ -51,12 +53,15 @@ public class Webcam {
 
     public void init(HardwareMap hardwareMap){
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        WebcamName webcamName = null;
-        webcamName = hardwareMap.get(WebcamName.class, "Webcam"); // put your camera's name here
+        WebcamName webcamName;
+        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
+        FtcDashboard.getInstance().startCameraStream(webcam, 0);
 
-//        aprilTagDetect = new AprilTagDetect(tagsize, fx, fy, cx, cy);
+        // pipelines
         spikePipe = new SpikeDetect(redAlliance);
+        // aprilTagPipe = new AprilTagDetect(tagsize, fx, fy, cx, cy);
+        pixelPipe = new PixelDetect();
 
         webcam.setPipeline(spikePipe);
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -68,48 +73,94 @@ public class Webcam {
             @Override
             public void onError(int errorCode) {
                 telemetry.addData("Camera Failed", "");
-
                 telemetry.update();
             }
         });
     }
 
-    public void scanForTags(){
-        ArrayList<AprilTagDetection> currentDetections = aprilTagDetect.getLatestDetections();
+    public void scanForTags(AprilTagDetect aprilTagPipe){
+        webcam.setPipeline(aprilTagPipe);
+        ArrayList<AprilTagDetection> currentDetections = aprilTagPipe.getLatestDetections();
 
+//        if (currentDetections.size() != 0) {
+//
+//            for (AprilTagDetection tag : currentDetections) {
+//                if (tag.id == AprilTagLocation.ONE.getId()) {
+//                    aprilTagLocation = AprilTagLocation.ONE;
+//                    tagOfInterest = tag;
+//                    break;
+//                } else if (tag.id == AprilTagLocation.TWO.getId()) {
+//                    aprilTagLocation = AprilTagLocation.TWO;
+//                    tagOfInterest = tag;
+//                    break;
+//                } else if (tag.id == AprilTagLocation.THREE.getId()) {
+//                    aprilTagLocation = AprilTagLocation.THREE;
+//                    tagOfInterest = tag;
+//                    break;
+//                }
+//            }
+//        }
+
+        // hopefully works
         if (currentDetections.size() != 0) {
-
             for (AprilTagDetection tag : currentDetections) {
-                if (tag.id == Location.ONE.getId()) {
-                    location = Location.ONE;
+                if (tag.id == aprilTagLocation.getId()) {
                     tagOfInterest = tag;
-                    break;
-                } else if (tag.id == Location.TWO.getId()) {
-                    location = Location.TWO;
-                    tagOfInterest = tag;
-                    break;
-                } else if (tag.id == Location.THREE.getId()) {
-                    location = Location.THREE;
-                    tagOfInterest = tag;
-                    break;
                 }
             }
         }
     }
 
-    public Location getLocation(){
-        return location;
+    public void scanForLocation() {
+        //webcam.setPipeline(spikePipe);
+        location = spikePipe.getLocation();
+
+        switch (location) {
+            case LEFT:
+                aprilTagLocation = redAlliance ? AprilTagLocation.ONE : AprilTagLocation.FOUR;
+                break;
+            case MID:
+                aprilTagLocation = redAlliance ? AprilTagLocation.TWO : AprilTagLocation.FIVE;
+                break;
+            case RIGHT:
+                aprilTagLocation = redAlliance ? AprilTagLocation.THREE : AprilTagLocation.SIX;
+                break;
+        }
+    }
+
+    public AprilTagLocation getAprilTagLocation() {
+        return aprilTagLocation;
+    }
+
+    public SpikeDetect.Location getLocation(){
+        return spikePipe.getLocation();
     }
 
     public AprilTagDetection getTagOfInterest(){
         return tagOfInterest;
     }
 
+    public double getTranslationX() {
+        return tagOfInterest.pose.x;
+    }
+
+    public double getTranslationY() {
+        return tagOfInterest.pose.y;
+    }
+
+    public double getTranslationZ() {
+        return tagOfInterest.pose.z;
+    }
+
+    public MatrixF getRotation() {
+        return tagOfInterest.pose.R;
+    }
+
     public void stopStreaming(){
         webcam.stopStreaming();
     }
 
-    public enum Location {
+    public enum AprilTagLocation {
         ONE (1),
         TWO (2),
         THREE (3),
@@ -119,7 +170,7 @@ public class Webcam {
 
         int id;
 
-        Location(int id){
+        AprilTagLocation(int id){
             this.id = id;
         }
 

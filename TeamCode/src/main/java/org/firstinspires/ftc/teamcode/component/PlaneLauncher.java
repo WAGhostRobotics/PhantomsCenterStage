@@ -1,21 +1,21 @@
 package org.firstinspires.ftc.teamcode.component;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class PlaneLauncher {
 
-    private CRServo pLauncher;
+    private Servo pLauncher;
     public void init(HardwareMap hwmap){
-        pLauncher = hwmap.get(CRServo.class, "launcher");
+        pLauncher = hwmap.get(Servo.class, "launcher");
     }
 
     public void open(){
-        pLauncher.setPower(1);
+        pLauncher.setPosition(0.05);
     }
 
     public void close(){
-        pLauncher.setPower(0);
+        pLauncher.setPosition(0);
     }
 
 }

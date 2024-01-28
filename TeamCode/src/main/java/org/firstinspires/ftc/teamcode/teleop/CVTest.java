@@ -30,12 +30,12 @@ public class CVTest extends LinearOpMode {
 
     public void display() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        WebcamName webcamName = null;
+        WebcamName webcamName;
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1"); // put your camera's name here
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
-//        FtcDashboard.getInstance().startCameraStream(webcam, 0);
+        FtcDashboard.getInstance().startCameraStream(webcam, 0);
         GamepadEx driverOp = new GamepadEx(gamepad1);// driver
-         pipe = new SpikeDetect(false);
+         pipe = new SpikeDetect(true);
         // pipe = new PixelDetect();
 //        pipe = new AprilTagDetect(0.1016, 822.317, 822.317f, 319.495, 242.502);
 
@@ -58,7 +58,6 @@ public class CVTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         display();
         waitForStart();
-        while (!isStarted() && !isStopRequested());
 
         while(opModeIsActive()) {
 //            // Test SpikeDetect pipeline

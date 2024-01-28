@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.auto;
+package org.firstinspires.ftc.teamcode.auto.cameraAuto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Longitude")
-public class LongRedAuto extends AutoParent {
+@Autonomous(name = "CameraRedLongitude")
+public class LongRedCameraAuto extends CameraParent {
     @Override
     public void runOpMode() {
         super.useLong = true;

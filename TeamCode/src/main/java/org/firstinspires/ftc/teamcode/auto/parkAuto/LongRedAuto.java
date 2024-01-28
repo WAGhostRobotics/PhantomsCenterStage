@@ -1,13 +1,13 @@
-package org.firstinspires.ftc.teamcode.auto;
+package org.firstinspires.ftc.teamcode.auto.parkAuto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Longitude")
-public class LongBlueAuto extends AutoParent {
+@Autonomous(name = "RedLongitude")
+public class LongRedAuto extends AutoParent {
     @Override
     public void runOpMode() {
         super.useLong = true;
-        super.redAlliance = false;
+        super.redAlliance = true;
         super.runOpMode();
     }
 }

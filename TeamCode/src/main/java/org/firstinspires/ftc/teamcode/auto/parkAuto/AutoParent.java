@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auto;
+package org.firstinspires.ftc.teamcode.auto.parkAuto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -27,7 +27,7 @@ public class AutoParent extends LinearOpMode {
 
         location = Felicia.webcam.getLocation();
 
-        Trajectory myTrajectory = drive.trajectoryBuilder(new Pose2d())
+        Trajectory trajectoryPark = drive.trajectoryBuilder(new Pose2d())
                 .forward(distance)
                 .build();
 
@@ -35,6 +35,9 @@ public class AutoParent extends LinearOpMode {
 
         if(isStopRequested()) return;
 
-        drive.followTrajectory(myTrajectory);
+        drive.followTrajectory(trajectoryPark);
+
+        telemetry.addData("Wonky Location", location);
+        telemetry.update();
     }
 }
