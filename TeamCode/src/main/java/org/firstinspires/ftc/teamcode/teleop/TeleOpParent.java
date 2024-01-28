@@ -56,9 +56,7 @@ public class TeleOpParent extends LinearOpMode {
                         false
                 );
             }
-            if (gamepad1.a) {
-                Felicia.planeLauncher.open();
-            }
+
             telemetry.update();
         }
     }

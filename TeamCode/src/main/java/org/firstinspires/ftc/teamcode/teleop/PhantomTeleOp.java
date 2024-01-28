@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.core.Felicia;
 import org.firstinspires.ftc.teamcode.library.DriveStyle;
@@ -24,9 +25,11 @@ public class PhantomTeleOp extends LinearOpMode {
     DriveStyle.DriveType type = DriveStyle.DriveType.MECANUMARCADE;
 
     @Override
+
     public void runOpMode() throws InterruptedException {
         Felicia.init(hardwareMap, true, false);
         GamepadEx driverOp = new GamepadEx(gamepad1);// driver
+        Servo launcher = hardwareMap.get(Servo.class, "launcher");
         waitForStart();
         MecanumDrive drive = new MecanumDrive(
                 Felicia.frontLeft,
@@ -35,22 +38,6 @@ public class PhantomTeleOp extends LinearOpMode {
                 Felicia.backRight
         );
         while (opModeIsActive()) {
-//            if(gamepad1.b && !lastB && launched){
-//                Felicia.planeLauncher.close();
-//                lastB = true;
-//                launched = false;
-//            }
-//            else if(gamepad1.b && !lastB){
-//                Felicia.planeLauncher.open();
-//                lastB = true;
-//                launched = true;
-//            }
-//            else if(gamepad1.b){
-//                lastB = true;
-//            }
-//            else{
-//                lastB = false;
-//            }
 
             if(gamepad1.a && !lastA && !claw){
                 Felicia.intake.open();
@@ -65,6 +52,11 @@ public class PhantomTeleOp extends LinearOpMode {
             else{
                 lastA = gamepad1.a;
             }
+
+            if (gamepad1.b){
+                launcher.setPosition(0.08);
+            }
+
 //            if(gamepad1.dpad_down){
 //                Felicia.slides.retract();
 //            }

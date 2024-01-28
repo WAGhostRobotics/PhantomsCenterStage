@@ -28,6 +28,9 @@ public class AutoParent extends LinearOpMode {
         location = Felicia.webcam.getLocation();
 
         Trajectory trajectoryPark = drive.trajectoryBuilder(new Pose2d())
+                .strafeRight(15)
+                .build();
+        Trajectory trajectoryPark2 = drive.trajectoryBuilder(new Pose2d())
                 .forward(distance)
                 .build();
 
@@ -35,7 +38,9 @@ public class AutoParent extends LinearOpMode {
 
         if(isStopRequested()) return;
 
+        sleep(20000);
         drive.followTrajectory(trajectoryPark);
+        drive.followTrajectory(trajectoryPark2);
 
         telemetry.addData("Wonky Location", location);
         telemetry.update();

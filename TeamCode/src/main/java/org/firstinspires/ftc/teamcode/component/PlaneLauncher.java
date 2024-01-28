@@ -5,17 +5,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class PlaneLauncher {
 
-    private Servo pLauncher;
+    public Servo pLauncher;
     public void init(HardwareMap hwmap){
         pLauncher = hwmap.get(Servo.class, "launcher");
     }
 
-    public void open(){
-        pLauncher.setPosition(0.05);
-    }
-
-    public void close(){
-        pLauncher.setPosition(0);
+    public void launch(){
+        pLauncher.setPosition(0.08);
     }
 
 }
