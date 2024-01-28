@@ -2,12 +2,10 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.core.Bot;
+import org.firstinspires.ftc.teamcode.core.Felicia;
 import org.firstinspires.ftc.teamcode.library.DriveStyle;
 import org.firstinspires.ftc.teamcode.library.DriverOrientedControl;
 
@@ -27,23 +25,23 @@ public class PhantomTeleOp extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Bot.init(hardwareMap, true);
+        Felicia.init(hardwareMap, true, false);
         GamepadEx driverOp = new GamepadEx(gamepad1);// driver
         waitForStart();
         MecanumDrive drive = new MecanumDrive(
-                Bot.frontLeft,
-                Bot.frontRight,
-                Bot.backLeft,
-                Bot.backRight
+                Felicia.frontLeft,
+                Felicia.frontRight,
+                Felicia.backLeft,
+                Felicia.backRight
         );
         while (opModeIsActive()) {
             if(gamepad1.b && !lastB && launched){
-                Bot.planeLauncher.close();
+                Felicia.planeLauncher.close();
                 lastB = true;
                 launched = false;
             }
             else if(gamepad1.b && !lastB){
-                Bot.planeLauncher.open();
+                Felicia.planeLauncher.open();
                 lastB = true;
                 launched = true;
             }
@@ -55,12 +53,12 @@ public class PhantomTeleOp extends LinearOpMode {
             }
 
             if(gamepad1.a && !lastA && !claw){
-                Bot.intake.open();
+                Felicia.intake.open();
                 lastA = true;
                 claw = true;
             }
             else if(gamepad1.a && !lastA){
-                Bot.intake.close();
+                Felicia.intake.close();
                 lastA = true;
                 claw = false;
             }
@@ -88,7 +86,7 @@ public class PhantomTeleOp extends LinearOpMode {
                         power * (Math.pow(driverOp.getLeftX(), 3)),
                         power * (Math.pow(driverOp.getLeftY(), 3)),
                         turningMultiplier * power * (Math.pow(driverOp.getRightX(), 3)),
-                        Bot.imu.getRotation2d().getDegrees(),   // gyro value passed in here must be in degrees
+                        Felicia.imu.getRotation2d().getDegrees(),   // gyro value passed in here must be in degrees
                         false
                 );
             }

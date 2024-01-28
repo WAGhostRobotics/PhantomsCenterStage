@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.component.LinearSlide;
-import org.firstinspires.ftc.teamcode.core.Bot;
+import org.firstinspires.ftc.teamcode.core.Felicia;
 import org.firstinspires.ftc.teamcode.library.DriveStyle;
 import org.firstinspires.ftc.teamcode.library.DriverOrientedControl;
 
@@ -28,21 +28,21 @@ public class TeleOpParent extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Bot.init(hardwareMap, true);
+        Felicia.init(hardwareMap, true);
 
         GamepadEx driverOp = new GamepadEx(gamepad1);// driver
         GamepadEx driverOp2 = new GamepadEx(gamepad2);//other
 
-        Bot.planeLauncher.close();
-        Bot.slides.setTargetPosition(LinearSlide.Pos.COLLAPSED_POSITION.getPosition());
+        Felicia.planeLauncher.close();
+        Felicia.slides.setTargetPosition(LinearSlide.Pos.COLLAPSED_POSITION.getPosition());
 
         waitForStart();
 
         MecanumDrive drive = new MecanumDrive(
-                Bot.frontLeft,
-                Bot.frontRight,
-                Bot.backLeft,
-                Bot.backRight
+                Felicia.frontLeft,
+                Felicia.frontRight,
+                Felicia.backLeft,
+                Felicia.backRight
         );
 
         while (opModeIsActive()) {
@@ -60,22 +60,22 @@ public class TeleOpParent extends LinearOpMode {
                         power * (Math.pow(driverOp.getLeftX(), 3)),
                         power * (Math.pow(driverOp.getLeftY(), 3)),
                         turningMultiplier * power * (Math.pow(driverOp.getRightX(), 3)),
-                        Bot.imu.getRotation2d().getDegrees(),   // gyro value passed in here must be in degrees
+                        Felicia.imu.getRotation2d().getDegrees(),   // gyro value passed in here must be in degrees
                         false
                 );
             }
             if (gamepad1.a) {
-                Bot.planeLauncher.open();
+                Felicia.planeLauncher.open();
             }
             //Check Slides after motor added
             if (gamepad2.left_trigger > 0) {
-                Bot.slides.setTargetPosition(LinearSlide.Pos.COLLAPSED_POSITION.getPosition());
+                Felicia.slides.setTargetPosition(LinearSlide.Pos.COLLAPSED_POSITION.getPosition());
             }
             if (gamepad2.right_trigger > 0) {
-                Bot.slides.setTargetPosition(LinearSlide.Pos.MIDDLE_POSITION.getPosition());
+                Felicia.slides.setTargetPosition(LinearSlide.Pos.MIDDLE_POSITION.getPosition());
             }
             if (gamepad2.right_trigger > 0 && gamepad2.right_trigger>0) {
-                Bot.slides.setTargetPosition(LinearSlide.Pos.FORWARD_POSITION.getPosition());
+                Felicia.slides.setTargetPosition(LinearSlide.Pos.FORWARD_POSITION.getPosition());
             }
             telemetry.update();
         }

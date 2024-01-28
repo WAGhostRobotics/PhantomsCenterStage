@@ -6,11 +6,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.component.Intake;
 import org.firstinspires.ftc.teamcode.component.LinearSlide;
-import org.firstinspires.ftc.teamcode.component.Imu;
 import org.firstinspires.ftc.teamcode.component.PlaneLauncher;
+import org.firstinspires.ftc.teamcode.component.Webcam;
 
 
-public class Bot {
+public class Felicia {
     public static HardwareMap hardwareMap;
     public static RevIMU imu;
 
@@ -22,9 +22,10 @@ public class Bot {
     public static PlaneLauncher planeLauncher;
     public static LinearSlide slides;
     public static Intake intake;
+    public static Webcam webcam;
 //    public static imu imu;
 
-    public static void init(HardwareMap hwMap, boolean initTeleOp) {
+    public static void init(HardwareMap hwMap, boolean initTeleOp, boolean redAlliance) {
 
         hardwareMap = hwMap;
         imu = new RevIMU(hwMap);
@@ -38,6 +39,8 @@ public class Bot {
 
         slides = new LinearSlide();
         slides.init(hardwareMap);
+
+        webcam = new Webcam(redAlliance);
 
         frontLeft = new Motor(hwMap, "leftFront");
         frontRight = new Motor(hwMap, "rightFront");

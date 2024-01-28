@@ -33,7 +33,7 @@ public class CVTest extends LinearOpMode {
         WebcamName webcamName = null;
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1"); // put your camera's name here
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
-        FtcDashboard.getInstance().startCameraStream(webcam, 0);
+//        FtcDashboard.getInstance().startCameraStream(webcam, 0);
         GamepadEx driverOp = new GamepadEx(gamepad1);// driver
          pipe = new SpikeDetect(false);
         // pipe = new PixelDetect();
