@@ -58,14 +58,6 @@ public class Felicia {
         backRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
     }
 
-
-    /**
-     * Sleeps for the given amount of milliseconds, or until the thread is interrupted. This is
-     * simple shorthand for the operating-system-provided {@link Thread#sleep(long) sleep()} method.
-     *
-     * @param milliseconds amount of time to sleep, in milliseconds
-     * @see Thread#sleep(long)
-     */
     public static void sleep(long milliseconds){
         try {
             Thread.sleep(milliseconds);

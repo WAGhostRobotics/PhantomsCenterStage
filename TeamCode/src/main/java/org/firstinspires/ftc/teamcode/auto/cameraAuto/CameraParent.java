@@ -10,12 +10,8 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.library.vision.SpikeDetect;
 
 public class CameraParent extends LinearOpMode {
-    private SampleMecanumDrive drive;
     public boolean useLong;
     public boolean redAlliance;
-
-    private SpikeDetect.Location location;
-    private Pose2d startPose;
 
     Trajectory trajectorySpike;
     Trajectory trajectoryPark;
@@ -27,12 +23,12 @@ public class CameraParent extends LinearOpMode {
         Felicia.init(hardwareMap, false, redAlliance);
         Felicia.webcam.init(hardwareMap);
 
-        drive = new SampleMecanumDrive(hardwareMap);
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        location = Felicia.webcam.getLocation();
+        SpikeDetect.Location location = Felicia.webcam.getLocation();
         place = "";
 
-        startPose = new Pose2d(-60, 24, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(-60, 24, Math.toRadians(0));
         drive.setPoseEstimate(startPose);
 
         while(opModeInInit()) {
