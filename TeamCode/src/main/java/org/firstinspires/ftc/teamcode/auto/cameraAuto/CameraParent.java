@@ -37,27 +37,27 @@ public class CameraParent extends LinearOpMode {
                     trajectorySpike = drive.trajectoryBuilder(new Pose2d())
                         .strafeTo(new Vector2d(1,2))
                         .build();
-                    trajectoryPark = drive.trajectoryBuilder(new Pose2d())
-                        .splineTo(new Vector2d(1,2), Math.toRadians(-90))
-                        .build();
+//                    trajectoryPark = drive.trajectoryBuilder(new Pose2d())
+//                        .splineTo(new Vector2d(1,2), Math.toRadians(-90))
+//                        .build();
                     place="Left";
                     break;
                 case MID:
                     trajectorySpike = drive.trajectoryBuilder(new Pose2d())
                         .forward(24)
                         .build();
-                    trajectoryPark = drive.trajectoryBuilder(new Pose2d())
-                        .splineTo(new Vector2d(24,48), Math.toRadians(90))
-                        .build();
+//                    trajectoryPark = drive.trajectoryBuilder(new Pose2d())
+//                        .splineTo(new Vector2d(24,48), Math.toRadians(90))
+//                        .build();
                     place="Middle";
                     break;
                 case RIGHT:
                     trajectorySpike = drive.trajectoryBuilder(new Pose2d())
                             .strafeTo(new Vector2d(1,2))
                             .build();
-                    trajectoryPark = drive.trajectoryBuilder(new Pose2d())
-                            .splineTo(new Vector2d(1,2), Math.toRadians(-90))
-                            .build();
+//                    trajectoryPark = drive.trajectoryBuilder(new Pose2d())
+//                            .splineTo(new Vector2d(1,2), Math.toRadians(-90))
+//                            .build();
                     place="Right";
                     break;
             }
@@ -67,7 +67,7 @@ public class CameraParent extends LinearOpMode {
         if(isStopRequested()) return;
 
         drive.followTrajectory(trajectorySpike);
-        Felicia.intake.open();
+//        Felicia.intake.open();
         drive.followTrajectory(trajectoryPark);
         Felicia.webcam.stopStreaming();
 

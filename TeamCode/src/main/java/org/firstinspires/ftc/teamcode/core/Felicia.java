@@ -50,7 +50,7 @@ public class Felicia {
         frontLeft.setInverted(true);
         frontRight.setInverted(false);
         backLeft.setInverted(true);
-        backRight.setInverted(true);
+        backRight.setInverted(false);
 
         frontLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);

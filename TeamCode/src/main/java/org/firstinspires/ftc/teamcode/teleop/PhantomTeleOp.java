@@ -29,7 +29,7 @@ public class PhantomTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Felicia.init(hardwareMap, true, false);
         GamepadEx driverOp = new GamepadEx(gamepad1);// driver
-        Servo launcher = hardwareMap.get(Servo.class, "launcher");
+//        Servo intake = hardwareMap.get(Servo.class, "intake");
         waitForStart();
         MecanumDrive drive = new MecanumDrive(
                 Felicia.frontLeft,
@@ -38,6 +38,8 @@ public class PhantomTeleOp extends LinearOpMode {
                 Felicia.backRight
         );
         while (opModeIsActive()) {
+
+//            intake.setPosition(gamepad1.left_stick_x);
 
             if(gamepad1.a && !lastA && !claw){
                 Felicia.intake.open();
@@ -53,9 +55,10 @@ public class PhantomTeleOp extends LinearOpMode {
                 lastA = gamepad1.a;
             }
 
-            if (gamepad1.b){
-                launcher.setPosition(0.08);
-            }
+
+//            if (gamepad1.b){
+//                launcher.setPosition(0.08);
+//            }
 
 //            if(gamepad1.dpad_down){
 //                Felicia.slides.retract();
@@ -67,6 +70,7 @@ public class PhantomTeleOp extends LinearOpMode {
             telemetry.addData("Claw?", claw);
             telemetry.addData("Last B?", lastB);
             telemetry.addData("Launched?", launched);
+            telemetry.addData("IntakePos", Felicia.intake.getPos());
 
             //DRIVETRAIN STUFF
             if (type == DriveStyle.DriveType.MECANUMARCADE) {

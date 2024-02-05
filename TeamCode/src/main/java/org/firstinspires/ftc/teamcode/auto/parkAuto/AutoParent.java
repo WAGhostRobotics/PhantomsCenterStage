@@ -1,48 +1,50 @@
 package org.firstinspires.ftc.teamcode.auto.parkAuto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.component.Webcam;
 import org.firstinspires.ftc.teamcode.core.Felicia;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.library.vision.SpikeDetect;
 
 public class AutoParent extends LinearOpMode {
-    private SampleMecanumDrive drive;
-    private double distance;
     public boolean useLong;
     public boolean redAlliance;
 
-    private SpikeDetect.Location location;
     //For all Splines, x should be -1* the number you want
     @Override
     public void runOpMode() {
         Felicia.init(hardwareMap, false, redAlliance);
-        Felicia.webcam.init(hardwareMap);
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+//        Felicia.webcam.init(hardwareMap);
 
-        drive = new SampleMecanumDrive(hardwareMap);
-        distance = useLong ? 97.5 : 48;
+        int startX = useLong ? 12 : 12;
+        int startY = redAlliance ? -60 : 60;
+        Pose2d startPose = new Pose2d(startX, startY, Math.toRadians(-90));
 
-        location = Felicia.webcam.getLocation();
+        //Forward- 13, 36
+        //Top- 26, 33
+        //Bottom- -4, 33
 
-        Trajectory trajectoryPark = drive.trajectoryBuilder(new Pose2d())
-                .strafeRight(15)
+        drive.setPoseEstimate(startPose);
+        int midPosX = 26;
+        int midPosY = 33;
+
+        Trajectory trajectorySpike1 = drive.trajectoryBuilder(startPose)
+                .strafeTo(new Vector2d(startX, midPosY))
                 .build();
-        Trajectory trajectoryPark2 = drive.trajectoryBuilder(new Pose2d())
-                .forward(distance)
+        Trajectory trajectorySpike2 = drive.trajectoryBuilder(trajectorySpike1.end())
+                .strafeTo(new Vector2d(midPosX, midPosY))
                 .build();
-
+//        Trajectory trajectoryPark = drive.trajectoryBuilder(trajectorySpike2.end())
+//                .splineTo(new Vector2d(60, 60), Math.toRadians(0))
+//                .build();
         waitForStart();
 
-        if(isStopRequested()) return;
-
-        sleep(20000);
-        drive.followTrajectory(trajectoryPark);
-        drive.followTrajectory(trajectoryPark2);
-
-        telemetry.addData("Wonky Location", location);
-        telemetry.update();
+        drive.followTrajectory(trajectorySpike1);
+        drive.followTrajectory(trajectorySpike2);
+        Felicia.intake.open();
+//        drive.followTrajectory(trajectoryPark2);
     }
 }

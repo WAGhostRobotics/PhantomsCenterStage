@@ -12,8 +12,8 @@ public class Intake {
     private double CLOSED;
 
     public void init(HardwareMap hwmap){
-        OPEN = 0.2;
-        CLOSED = 1;
+        OPEN = 1;
+        CLOSED = 0;
         intake = hwmap.get(Servo.class, "intake");
     }
 
@@ -24,5 +24,7 @@ public class Intake {
     public void close(){
         intake.setPosition(CLOSED);
     }
+
+    public double getPos(){return intake.getPosition();}
 
 }
