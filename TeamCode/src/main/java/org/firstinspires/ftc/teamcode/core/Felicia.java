@@ -31,8 +31,8 @@ public class Felicia {
         imu = new RevIMU(hwMap);
         imu.init();
 
-        planeLauncher = new PlaneLauncher();
-        planeLauncher.init(hardwareMap);
+//        planeLauncher = new PlaneLauncher();
+//        planeLauncher.init(hardwareMap);
 
         intake = new Intake();
         intake.init(hardwareMap);

@@ -23,14 +23,14 @@ public class AutoParent extends LinearOpMode {
         int YMult = redAlliance ? -1 : 1;
         Pose2d startPose = new Pose2d(startX, 60*YMult, Math.toRadians(-90*YMult));
 
-        //Forward- 13, 36, -90
-        //Top- 19, 33, 0
-        //Bottom- 5, 33, -180
+        //Forward- 13, 32, -90
+        //Top- 13, *30*, 0
+        //Bottom- 9, 33, -180
 
         drive.setPoseEstimate(startPose);
-        int midPosX = 5;
-        int midPosY = 33;
-        double angle = Math.toRadians(-180*YMult);
+        int midPosX = 13;
+        int midPosY = 30;
+        double angle = Math.toRadians(0*YMult);
 //                .addTemporalMarker(2, () -> Felicia.intake.open()) // Lower servo
 //                .addTemporalMarker(2, () -> Felicia.intake.close())
         Trajectory trajectorySpike1 = drive.trajectoryBuilder(startPose)
@@ -49,6 +49,6 @@ public class AutoParent extends LinearOpMode {
         drive.followTrajectory(trajectorySpike2);
         Felicia.intake.open();
         sleep(2000);
-        drive.followTrajectory(trajectoryPark);
+//        drive.followTrajectory(trajectoryPark);
     }
 }

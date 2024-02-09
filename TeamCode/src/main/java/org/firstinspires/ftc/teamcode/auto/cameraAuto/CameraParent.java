@@ -13,10 +13,9 @@ public class CameraParent extends LinearOpMode {
     public boolean useLong;
     public boolean redAlliance;
 
-    Trajectory trajectorySpike;
+    Trajectory trajectorySpike1;
+    Trajectory trajectorySpike2;
     Trajectory trajectoryPark;
-
-    String place;
     //For all Splines, x should be -1* the number you want
     @Override
     public void runOpMode() {
@@ -25,53 +24,89 @@ public class CameraParent extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        SpikeDetect.Location location = Felicia.webcam.getLocation();
-        place = "";
+        int startX = 12;
+        int YMult = redAlliance ? -1 : 1;
 
-        Pose2d startPose = new Pose2d(-60, 24, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(startX, 60*YMult, Math.toRadians(-90*YMult));
+        drive.setPoseEstimate(startPose);
+
+        SpikeDetect.Location location = Felicia.webcam.getLocation();
+
+        int place = 0;
+
+        if (location == SpikeDetect.Location.LEFT){
+            place = 1;
+        }
+        else if (location == SpikeDetect.Location.MID){
+            place = 2;
+        }
+        else if (location == SpikeDetect.Location.RIGHT){
+            place = 3;
+        }
+
+        //Forward- 13, 32, -90
+        //Top- 13, *30*, 0
+        //Bottom- 9, 33, -180
         drive.setPoseEstimate(startPose);
 
         while(opModeInInit()) {
-            switch (location) {
-                case LEFT:
-                    trajectorySpike = drive.trajectoryBuilder(new Pose2d())
-                        .strafeTo(new Vector2d(1,2))
+            switch (place) {
+                case 1:
+                    trajectorySpike1 = drive.trajectoryBuilder(startPose)
+                        .strafeTo(new Vector2d(startX, 35*YMult))
                         .build();
-//                    trajectoryPark = drive.trajectoryBuilder(new Pose2d())
-//                        .splineTo(new Vector2d(1,2), Math.toRadians(-90))
-//                        .build();
-                    place="Left";
-                    break;
-                case MID:
-                    trajectorySpike = drive.trajectoryBuilder(new Pose2d())
-                        .forward(24)
+                    trajectorySpike2 = drive.trajectoryBuilder(trajectorySpike1.end())
+                        .splineTo(new Vector2d(13, 30*YMult), Math.toRadians(0))
                         .build();
-//                    trajectoryPark = drive.trajectoryBuilder(new Pose2d())
-//                        .splineTo(new Vector2d(24,48), Math.toRadians(90))
-//                        .build();
-                    place="Middle";
+                    trajectoryPark = drive.trajectoryBuilder(trajectorySpike2.end())
+                        .lineToConstantHeading(new Vector2d(startX, (35)*YMult))
+                        .splineTo(new Vector2d(60, 60*YMult), Math.toRadians(0))
+                        .build();
+//                    place="Left";
                     break;
-                case RIGHT:
-                    trajectorySpike = drive.trajectoryBuilder(new Pose2d())
-                            .strafeTo(new Vector2d(1,2))
+                case 2:
+                    trajectorySpike1 = drive.trajectoryBuilder(startPose)
+                            .strafeTo(new Vector2d(startX, 37*YMult))
                             .build();
-//                    trajectoryPark = drive.trajectoryBuilder(new Pose2d())
-//                            .splineTo(new Vector2d(1,2), Math.toRadians(-90))
-//                            .build();
-                    place="Right";
+                    trajectorySpike2 = drive.trajectoryBuilder(trajectorySpike1.end())
+                            .splineTo(new Vector2d(13, 32*YMult), Math.toRadians(-90))
+                            .build();
+                    trajectoryPark = drive.trajectoryBuilder(trajectorySpike2.end())
+                            .lineToConstantHeading(new Vector2d(startX, (37)*YMult))
+                            .splineTo(new Vector2d(60, 60*YMult), Math.toRadians(0))
+                            .build();
+//                    place="Middle";
+                    break;
+                case 3:
+                    trajectorySpike1 = drive.trajectoryBuilder(startPose)
+                            .strafeTo(new Vector2d(startX, 38*YMult))
+                            .build();
+                    trajectorySpike2 = drive.trajectoryBuilder(trajectorySpike1.end())
+                            .splineTo(new Vector2d(9, 33*YMult), Math.toRadians(-180))
+                            .build();
+                    trajectoryPark = drive.trajectoryBuilder(trajectorySpike2.end())
+                            .lineToConstantHeading(new Vector2d(startX, (38)*YMult))
+                            .splineTo(new Vector2d(60, 60*YMult), Math.toRadians(0))
+                            .build();
+//                    place="Right";
                     break;
             }
         }
         waitForStart();
 
-        if(isStopRequested()) return;
+        while(!isStopRequested()){
+            if(location== SpikeDetect.Location.MID)
+            telemetry.addData("Loc", location);
+            telemetry.update();
+        }
 
-        drive.followTrajectory(trajectorySpike);
-//        Felicia.intake.open();
-        drive.followTrajectory(trajectoryPark);
+        drive.followTrajectory(trajectorySpike1);
+        drive.followTrajectory(trajectorySpike2);
+        Felicia.intake.open();
+        sleep(2000);
+//        drive.followTrajectory(trajectoryPark);
+
         Felicia.webcam.stopStreaming();
-
-        telemetry.addData("Place", place);
-        telemetry.update();
     }
 }
+
