@@ -11,7 +11,7 @@ public class PlaneLauncher {
     }
 
     public void launch(){
-        pLauncher.setPosition(0.08);
+        pLauncher.setPosition(0.8);
     }
 
 }

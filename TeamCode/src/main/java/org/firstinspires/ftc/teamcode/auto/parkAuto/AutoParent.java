@@ -12,7 +12,8 @@ public class AutoParent extends LinearOpMode {
     public boolean useLong;
     public boolean redAlliance;
 
-    Trajectory trajectoryPark;
+    Trajectory trajectoryPark1;
+    Trajectory trajectoryPark2;
 
     //For all Splines, x should be -1* the number you want
     @Override
@@ -21,17 +22,28 @@ public class AutoParent extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         if (!useLong) {
-            trajectoryPark = drive.trajectoryBuilder(new Pose2d())
-                    .forward(48)
+            trajectoryPark1 = drive.trajectoryBuilder(new Pose2d())
+                    .forward(47)
                     .build();
         }
         else{
-            trajectoryPark = drive.trajectoryBuilder(new Pose2d())
-                    .strafeRight(4)
+            if (redAlliance){
+                trajectoryPark1 = drive.trajectoryBuilder(new Pose2d())
+                        .strafeLeft(10)
+                        .build();
+            }
+            else{
+                trajectoryPark1 = drive.trajectoryBuilder(new Pose2d())
+                        .strafeRight(10)
+                        .build();
+            }
+            trajectoryPark2 = drive.trajectoryBuilder(trajectoryPark1.end())
                     .forward(96)
                     .build();
         }
         waitForStart();
-        drive.followTrajectory(trajectoryPark);
+//        sleep(15000);
+        drive.followTrajectory(trajectoryPark1);
+        drive.followTrajectory(trajectoryPark2);
     }
 }
