@@ -23,7 +23,7 @@ public class AutoParent extends LinearOpMode {
 
         if (!useLong) {
             trajectoryPark1 = drive.trajectoryBuilder(new Pose2d())
-                    .forward(47)
+                    .forward(48)
                     .build();
         }
         else{
