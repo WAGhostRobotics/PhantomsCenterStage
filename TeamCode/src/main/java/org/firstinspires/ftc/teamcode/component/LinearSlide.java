@@ -5,24 +5,30 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class LinearSlide {
 
-    private DcMotor slideMotor;
+    private DcMotor slideMotor1;
+    private DcMotor slideMotor2;
 
     private int targetPos;
     private double power;
 
     public void init(HardwareMap hwMap){
-        power = 0.1;
-//        slideMotor = hwMap.get(DcMotorEx.class, "slideMotor");
-//        slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        power = 1;
+        slideMotor1 = hwMap.get(DcMotor.class, "slideMotor1");
+        slideMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        slideMotor2 = hwMap.get(DcMotor.class, "slideMotor2");
+        slideMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void extend(){
-        slideMotor.setPower(power);
+        slideMotor1.setPower(power);
+        slideMotor2.setPower(power);
     }
     public void retract(){
-        slideMotor.setPower(-1*power);
+        slideMotor1.setPower(-1*power);
+        slideMotor2.setPower(-1*power);
     }
-    public void stopMotor(){
-        slideMotor.setPower(0);
+    public void stop(){
+        slideMotor1.setPower(0.1);
+        slideMotor2.setPower(0.1);
     }
 }

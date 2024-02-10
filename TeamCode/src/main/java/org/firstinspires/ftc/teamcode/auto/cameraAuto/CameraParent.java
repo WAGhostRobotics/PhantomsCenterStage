@@ -30,9 +30,16 @@ public class CameraParent extends LinearOpMode {
         Pose2d startPose = new Pose2d(startX, 60*YMult, Math.toRadians(-90*YMult));
         drive.setPoseEstimate(startPose);
 
-        SpikeDetect.Location location = Felicia.webcam.getLocation();
+        //Forward- 13, 32, -90
+        //Top- 13, *30*, 0
+        //Bottom- 9, 33, -180
+        drive.setPoseEstimate(startPose);
 
         int place = 0;
+
+        waitForStart();
+
+        SpikeDetect.Location location = Felicia.webcam.getLocation();
 
         if (location == SpikeDetect.Location.LEFT){
             place = 1;
@@ -44,69 +51,72 @@ public class CameraParent extends LinearOpMode {
             place = 3;
         }
 
-        //Forward- 13, 32, -90
-        //Top- 13, *30*, 0
-        //Bottom- 9, 33, -180
-        drive.setPoseEstimate(startPose);
-
-        while(opModeInInit()) {
-            switch (place) {
-                case 1:
-                    trajectorySpike1 = drive.trajectoryBuilder(startPose)
+        switch (place) {
+            case 1:
+                trajectorySpike1 = drive.trajectoryBuilder(startPose)
                         .strafeTo(new Vector2d(startX, 35*YMult))
                         .build();
-                    trajectorySpike2 = drive.trajectoryBuilder(trajectorySpike1.end())
+                trajectorySpike2 = drive.trajectoryBuilder(trajectorySpike1.end())
                         .splineTo(new Vector2d(13, 30*YMult), Math.toRadians(0))
                         .build();
-                    trajectoryPark = drive.trajectoryBuilder(trajectorySpike2.end())
+                trajectoryPark = drive.trajectoryBuilder(trajectorySpike2.end())
                         .lineToConstantHeading(new Vector2d(startX, (35)*YMult))
                         .splineTo(new Vector2d(60, 60*YMult), Math.toRadians(0))
                         .build();
 //                    place="Left";
-                    break;
-                case 2:
-                    trajectorySpike1 = drive.trajectoryBuilder(startPose)
-                            .strafeTo(new Vector2d(startX, 37*YMult))
-                            .build();
-                    trajectorySpike2 = drive.trajectoryBuilder(trajectorySpike1.end())
-                            .splineTo(new Vector2d(13, 32*YMult), Math.toRadians(-90))
-                            .build();
-                    trajectoryPark = drive.trajectoryBuilder(trajectorySpike2.end())
-                            .lineToConstantHeading(new Vector2d(startX, (37)*YMult))
-                            .splineTo(new Vector2d(60, 60*YMult), Math.toRadians(0))
-                            .build();
+                break;
+            case 2:
+                trajectorySpike1 = drive.trajectoryBuilder(startPose)
+                        .strafeTo(new Vector2d(startX, 37*YMult))
+                        .build();
+                trajectorySpike2 = drive.trajectoryBuilder(trajectorySpike1.end())
+                        .splineTo(new Vector2d(13, 32*YMult), Math.toRadians(-90))
+                        .build();
+                trajectoryPark = drive.trajectoryBuilder(trajectorySpike2.end())
+                        .lineToConstantHeading(new Vector2d(startX, (37)*YMult))
+                        .splineTo(new Vector2d(60, 60*YMult), Math.toRadians(0))
+                        .build();
 //                    place="Middle";
-                    break;
-                case 3:
-                    trajectorySpike1 = drive.trajectoryBuilder(startPose)
-                            .strafeTo(new Vector2d(startX, 38*YMult))
-                            .build();
-                    trajectorySpike2 = drive.trajectoryBuilder(trajectorySpike1.end())
-                            .splineTo(new Vector2d(9, 33*YMult), Math.toRadians(-180))
-                            .build();
-                    trajectoryPark = drive.trajectoryBuilder(trajectorySpike2.end())
-                            .lineToConstantHeading(new Vector2d(startX, (38)*YMult))
-                            .splineTo(new Vector2d(60, 60*YMult), Math.toRadians(0))
-                            .build();
+                break;
+            case 3:
+                trajectorySpike1 = drive.trajectoryBuilder(startPose)
+                        .strafeTo(new Vector2d(startX, 38*YMult))
+                        .build();
+                trajectorySpike2 = drive.trajectoryBuilder(trajectorySpike1.end())
+                        .splineTo(new Vector2d(9, 33*YMult), Math.toRadians(-180))
+                        .build();
+                trajectoryPark = drive.trajectoryBuilder(trajectorySpike2.end())
+                        .lineToConstantHeading(new Vector2d(startX, (38)*YMult))
+                        .splineTo(new Vector2d(60, 60*YMult), Math.toRadians(0))
+                        .build();
 //                    place="Right";
-                    break;
-            }
+                break;
         }
-        waitForStart();
 
         while(!isStopRequested()){
-            if(location== SpikeDetect.Location.MID)
-            telemetry.addData("Loc", location);
+
+//            SpikeDetect.Location location = Felicia.webcam.getLocation();
+//
+//            if (location == SpikeDetect.Location.LEFT){
+//                place = 1;
+//            }
+//            else if (location == SpikeDetect.Location.MID){
+//                place = 2;
+//            }
+//            else if (location == SpikeDetect.Location.RIGHT){
+//                place = 3;
+//            }
+
+            telemetry.addData("Loc", place);
             telemetry.update();
         }
 
-        drive.followTrajectory(trajectorySpike1);
-        drive.followTrajectory(trajectorySpike2);
-        Felicia.intake.open();
-        sleep(2000);
-//        drive.followTrajectory(trajectoryPark);
-
-        Felicia.webcam.stopStreaming();
+//        drive.followTrajectory(trajectorySpike1);
+//        drive.followTrajectory(trajectorySpike2);
+//        Felicia.intake.open();
+//        sleep(2000);
+////        drive.followTrajectory(trajectoryPark);
+//
+//        Felicia.webcam.stopStreaming();
     }
 }
-

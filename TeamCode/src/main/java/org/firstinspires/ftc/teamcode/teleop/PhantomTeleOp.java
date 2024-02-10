@@ -4,7 +4,6 @@ import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.core.Felicia;
 import org.firstinspires.ftc.teamcode.library.DriveStyle;
@@ -19,8 +18,6 @@ public class PhantomTeleOp extends LinearOpMode {
 
     private boolean lastA = false;
     private boolean claw = false;
-    private boolean lastB = false;
-    private boolean launched = false;
     //This bad boy
     DriveStyle.DriveType type = DriveStyle.DriveType.MECANUMARCADE;
 
@@ -59,16 +56,17 @@ public class PhantomTeleOp extends LinearOpMode {
 //                launcher.setPosition(0.08);
 //            }
 
-//            if(gamepad1.dpad_down){
-//                Felicia.slides.retract();
-//            }
-//            if(gamepad1.dpad_up){
-//                Felicia.slides.extend();
-//            }
+            if(gamepad1.dpad_down){
+                Felicia.slides.retract();
+            }
+            else if(gamepad1.dpad_up){
+                Felicia.slides.extend();
+            }
+            else{
+                Felicia.slides.stop();
+            }
             telemetry.addData("Last A?", lastA);
             telemetry.addData("Claw?", claw);
-            telemetry.addData("Last B?", lastB);
-            telemetry.addData("Launched?", launched);
 //            telemetry.addData("IntakePos", intake.getPosition());
 
             //DRIVETRAIN STUFF
