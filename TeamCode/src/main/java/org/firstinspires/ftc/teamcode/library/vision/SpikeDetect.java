@@ -33,7 +33,7 @@ public class SpikeDetect extends OpenCvPipeline {
             lowHSV = new Scalar(-15, 73, 153);
             highHSV = new Scalar(15, 200, 255);
         } else {
-            lowHSV = new Scalar(80, 50, 50);
+            lowHSV = new Scalar(80, 70, 100);
             highHSV = new Scalar(110, 200, 255);
         }
     }

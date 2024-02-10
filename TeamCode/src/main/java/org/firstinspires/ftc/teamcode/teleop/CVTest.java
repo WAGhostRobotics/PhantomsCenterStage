@@ -32,7 +32,7 @@ public class CVTest extends LinearOpMode {
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         FtcDashboard.getInstance().startCameraStream(webcam, 0);
         GamepadEx driverOp = new GamepadEx(gamepad1);// driver
-         pipe = new SpikeDetect(true);
+         pipe = new SpikeDetect(false);
         // pipe = new PixelDetect();
 //        pipe = new AprilTagDetect(0.1016, 822.317, 822.317f, 319.495, 242.502);
 

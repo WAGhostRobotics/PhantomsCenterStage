@@ -19,7 +19,7 @@ public class Felicia {
     public static Motor backLeft;
     public static Motor backRight;
 
-    public static PlaneLauncher planeLauncher;
+    public static PlaneLauncher launcher;
     public static LinearSlide slides;
     public static Intake intake;
     public static Webcam webcam;
@@ -31,8 +31,8 @@ public class Felicia {
         imu = new RevIMU(hwMap);
         imu.init();
 
-        planeLauncher = new PlaneLauncher();
-        planeLauncher.init(hardwareMap);
+//        launcher = new PlaneLauncher();
+//        launcher.init(hardwareMap);
 
         intake = new Intake();
         intake.init(hardwareMap);

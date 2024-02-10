@@ -12,44 +12,38 @@ public class AutoParent extends LinearOpMode {
     public boolean useLong;
     public boolean redAlliance;
 
+    Trajectory trajectoryPark1;
+    Trajectory trajectoryPark2;
+
     //For all Splines, x should be -1* the number you want
     @Override
     public void runOpMode() {
         Felicia.init(hardwareMap, false, redAlliance);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-//        Felicia.webcam.init(hardwareMap);
 
-        int startX = useLong ? 12 : 12;
-        int startY = redAlliance ? -60 : 60;
-        Pose2d startPose = new Pose2d(startX, startY, Math.toRadians(-90));
-
-        //Forward- 13, 36, -90
-        //Top- 19, 33, 0
-        //Bottom- 5, 33, -180
-
-        drive.setPoseEstimate(startPose);
-        int midPosX = 5;
-        int midPosY = 33;
-        double angle = Math.toRadians(-180);
-
-//                .addTemporalMarker(2, () -> Felicia.intake.open()) // Lower servo
-//                .addTemporalMarker(2, () -> Felicia.intake.close())
-        Trajectory trajectorySpike1 = drive.trajectoryBuilder(startPose)
-                .strafeTo(new Vector2d(startX, midPosY+5))
-                .build();
-        Trajectory trajectorySpike2 = drive.trajectoryBuilder(trajectorySpike1.end())
-                .splineTo(new Vector2d(midPosX, midPosY), angle)
-                .build();
-        Trajectory trajectoryPark = drive.trajectoryBuilder(trajectorySpike2.end())
-                .lineToConstantHeading(new Vector2d(startX, midPosY+5))
-                .splineTo(new Vector2d(60, 60), Math.toRadians(0))
-                .build();
+        if (!useLong) {
+            trajectoryPark1 = drive.trajectoryBuilder(new Pose2d())
+                    .forward(48)
+                    .build();
+        }
+        else{
+            if (redAlliance){
+                trajectoryPark1 = drive.trajectoryBuilder(new Pose2d())
+                        .strafeLeft(10)
+                        .build();
+            }
+            else{
+                trajectoryPark1 = drive.trajectoryBuilder(new Pose2d())
+                        .strafeRight(10)
+                        .build();
+            }
+            trajectoryPark2 = drive.trajectoryBuilder(trajectoryPark1.end())
+                    .forward(96)
+                    .build();
+        }
         waitForStart();
-
-        drive.followTrajectory(trajectorySpike1);
-        drive.followTrajectory(trajectorySpike2);
-//        Felicia.intake.open();
-//        sleep(2000);
-        drive.followTrajectory(trajectoryPark);
+//        sleep(15000);
+        drive.followTrajectory(trajectoryPark1);
+        drive.followTrajectory(trajectoryPark2);
     }
 }

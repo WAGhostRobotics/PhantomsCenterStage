@@ -19,8 +19,6 @@ public class PhantomTeleOp extends LinearOpMode {
 
     private boolean lastA = false;
     private boolean claw = false;
-    private boolean lastB = false;
-    private boolean launched = false;
     //This bad boy
     DriveStyle.DriveType type = DriveStyle.DriveType.MECANUMARCADE;
 
@@ -29,7 +27,7 @@ public class PhantomTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Felicia.init(hardwareMap, true, false);
         GamepadEx driverOp = new GamepadEx(gamepad1);// driver
-//        Servo intake = hardwareMap.get(Servo.class, "intake");
+        Servo launcher = hardwareMap.get(Servo.class, "launcher");
         waitForStart();
         MecanumDrive drive = new MecanumDrive(
                 Felicia.frontLeft,
@@ -55,39 +53,40 @@ public class PhantomTeleOp extends LinearOpMode {
                 lastA = gamepad1.a;
             }
 
-//            if (gamepad1.b){
-//                launcher.setPosition(0.08);
-//            }
+            if (gamepad1.b){
+                launcher.setPosition(1);
+            }
 
-//            if(gamepad1.dpad_down){
-//                Felicia.slides.retract();
-//            }
-//            if(gamepad1.dpad_up){
-//                Felicia.slides.extend();
-//            }
+            if(gamepad1.dpad_down){
+                Felicia.slides.retract();
+            }
+            else if(gamepad1.dpad_up){
+                Felicia.slides.extend();
+            }
+            else{
+                Felicia.slides.stop();
+            }
             telemetry.addData("Last A?", lastA);
             telemetry.addData("Claw?", claw);
-            telemetry.addData("Last B?", lastB);
-            telemetry.addData("Launched?", launched);
 //            telemetry.addData("IntakePos", intake.getPosition());
 
             //DRIVETRAIN STUFF
-//            if (type == DriveStyle.DriveType.MECANUMARCADE) {
-//                drive.driveRobotCentric(
-//                        power * driverOp.getLeftX(),
-//                        power * driverOp.getLeftY(),
-//                        power * driverOp.getRightX(),
-//                        false
-//                );
-//            } else if (type == DriveStyle.DriveType.DRIVERORIENTED) {
-//                drive.driveFieldCentric(
-//                        power * (Math.pow(driverOp.getLeftX(), 3)),
-//                        power * (Math.pow(driverOp.getLeftY(), 3)),
-//                        turningMultiplier * power * (Math.pow(driverOp.getRightX(), 3)),
-//                        Felicia.imu.getRotation2d().getDegrees(),   // gyro value passed in here must be in degrees
-//                        false
-//                );
-//            }
+            if (type == DriveStyle.DriveType.MECANUMARCADE) {
+                drive.driveRobotCentric(
+                        power * driverOp.getLeftX(),
+                        power * driverOp.getLeftY(),
+                        power * driverOp.getRightX(),
+                        false
+                );
+            } else if (type == DriveStyle.DriveType.DRIVERORIENTED) {
+                drive.driveFieldCentric(
+                        power * (Math.pow(driverOp.getLeftX(), 3)),
+                        power * (Math.pow(driverOp.getLeftY(), 3)),
+                        turningMultiplier * power * (Math.pow(driverOp.getRightX(), 3)),
+                        Felicia.imu.getRotation2d().getDegrees(),   // gyro value passed in here must be in degrees
+                        false
+                );
+            }
             telemetry.update();
         }
     }
